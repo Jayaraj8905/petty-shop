@@ -10,9 +10,10 @@ class PettyShopApp extends StatelessWidget {
     return MaterialApp(
       title: 'Petty Shop',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.purple,
         accentColor: Colors.deepOrangeAccent,
         fontFamily: 'Lato',
+        splashColor: Colors.black87
       ),
       home: ProductOverview()
     );
