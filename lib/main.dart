@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/screens/product_overview.dart';
 
 void main() => runApp(PettyShopApp());
 
@@ -13,9 +14,7 @@ class PettyShopApp extends StatelessWidget {
         accentColor: Colors.deepOrangeAccent,
         fontFamily: 'Lato',
       ),
-      home: Center(
-        child: Text('Anything can start with nothing'),
-      ),
+      home: ProductOverview()
     );
   }
 }
