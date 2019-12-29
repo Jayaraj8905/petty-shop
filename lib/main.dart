@@ -10,7 +10,8 @@ class PettyShopApp extends StatelessWidget {
       title: 'Petty Shop',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        accentColor: Colors.deepOrangeAccent
+        accentColor: Colors.deepOrangeAccent,
+        fontFamily: 'Lato',
       ),
       home: Center(
         child: Text('Anything can start with nothing'),
