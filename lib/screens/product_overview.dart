@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/widgets/product_item.dart';
 import './../models/product.dart';
 import './../DATA.dart';
 
@@ -17,8 +18,11 @@ class ProductOverview extends StatelessWidget {
       body: GridView.builder(
         padding: EdgeInsets.all(10),
         itemBuilder: (ctx, index) {
-          return Text(
-            products[index].title
+          return ProductItem(
+            id: products[index].image,
+            title: products[index].title,
+            image: products[index].image,
+            price: products[index].price,
           );
         },
         itemCount: products.length, 
