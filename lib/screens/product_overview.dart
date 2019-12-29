@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import './../models/product.dart';
+import './../DATA.dart';
 
 class ProductOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final List<Product>products = PRODUCTS;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Jade Minimart'// TODO: Has to come from the shops list
         ),
       ),
-      body: Center(
-        child: Text('Product Oveview Screen Skeleton'),
-      ),
+      body: GridView.builder(
+        padding: EdgeInsets.all(10),
+        itemBuilder: (ctx, index) {
+          return Text(
+            products[index].title
+          );
+        },
+        itemCount: products.length, 
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 3/2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10
+        ),
+      )
     );
   }
 
