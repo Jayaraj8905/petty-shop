@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './../screens/product_detail.dart';
+import './../screens/product_detail_screen.dart';
 
 /**
  * Render the Product Item 
@@ -33,7 +33,7 @@ class ProductItem extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(
-                ProductDetail.routeName, 
+                ProductDetailScreen.routeName, 
                 arguments: this.id
               );
             },
