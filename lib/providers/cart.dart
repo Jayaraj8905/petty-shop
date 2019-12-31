@@ -31,7 +31,6 @@ class Cart with ChangeNotifier {
   }
 
   bool isCartItem(productId) {
-    print(productId);
     return _items.containsKey(productId);
   }
 
