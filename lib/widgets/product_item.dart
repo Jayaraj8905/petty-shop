@@ -3,18 +3,18 @@ import './../screens/product_detail_screen.dart';
 
 /**
  * Render the Product Item 
- * Shows the title, price
+ * Shows the name, price
  * Enable fealibility to add to cart
  */
 class ProductItem extends StatelessWidget {
   final String id;
-  final String title;
+  final String name;
   final String price;
   final String image;
 
   ProductItem({
     @required this.id,
-    @required this.title,
+    @required this.name,
     @required this.price,
     @required this.image
   });
@@ -47,7 +47,7 @@ class ProductItem extends StatelessWidget {
           footer: GridTileBar(
             backgroundColor: Theme.of(context).splashColor,
             title: Text(
-              this.title
+              this.name
             ),
             trailing: IconButton(
               icon: Icon(

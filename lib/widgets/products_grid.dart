@@ -13,7 +13,7 @@ class ProductsGrid extends StatelessWidget {
       itemBuilder: (ctx, index) {
         return ProductItem(
           id: products[index].id,
-          title: products[index].title,
+          name: products[index].name,
           image: products[index].image,
           price: products[index].price,
         );
