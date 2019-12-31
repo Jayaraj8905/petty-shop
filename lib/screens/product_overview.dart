@@ -19,7 +19,7 @@ class ProductOverview extends StatelessWidget {
         padding: EdgeInsets.all(10),
         itemBuilder: (ctx, index) {
           return ProductItem(
-            id: products[index].image,
+            id: products[index].id,
             title: products[index].title,
             image: products[index].image,
             price: products[index].price,

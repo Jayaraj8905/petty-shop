@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:petty_shop/screens/product_overview.dart';
+import './screens/product_detail.dart';
+import './screens/product_overview.dart';
 
 void main() => runApp(PettyShopApp());
 
@@ -15,7 +16,10 @@ class PettyShopApp extends StatelessWidget {
         fontFamily: 'Lato',
         splashColor: Colors.black87
       ),
-      home: ProductOverview()
+      home: ProductOverview(),
+      routes: {
+        ProductDetail.routeName: (ctx) => ProductDetail()
+      },
     );
   }
 }
