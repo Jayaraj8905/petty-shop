@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './../providers/product.dart';
 import './../providers/cart.dart';
 import './../screens/product_detail_screen.dart';
 
@@ -9,24 +10,10 @@ import './../screens/product_detail_screen.dart';
  * Enable fealibility to add to cart
  */
 class ProductItem extends StatelessWidget {
-  final String id;
-  final String name;
-  final String price;
-  final String image;
-
-  ProductItem({
-    @required this.id,
-    @required this.name,
-    @required this.price,
-    @required this.image
-  });
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(
-      context,
-      listen: false 
-    );
+    final product = Provider.of<Product>(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Card(
@@ -39,12 +26,12 @@ class ProductItem extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pushNamed(
                 ProductDetailScreen.routeName, 
-                arguments: this.id
+                arguments: product.id
               );
             },
             child: Center(
               child: Image.network(
-                image,
+                product.image,
                 fit: BoxFit.fill,
               )
             )
@@ -52,14 +39,18 @@ class ProductItem extends StatelessWidget {
           footer: GridTileBar(
             backgroundColor: Theme.of(context).splashColor,
             title: Text(
-              this.name
+              product.name
             ),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.shopping_basket
-              ),
-              color: Theme.of(context).accentColor,
-              onPressed: () => cart.toggleCart(this.id),
+            trailing: Consumer<Cart>(
+              builder: (context, cart, _) {
+                return IconButton(
+                  icon: Icon(
+                    cart.isCartItem(product.id) ? Icons.remove_shopping_cart : Icons.add_shopping_cart
+                  ),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => cart.toggleCart(product.id),
+                );
+              },
             ),
           ),
         ),

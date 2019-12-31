@@ -30,10 +30,13 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
-  /// Add or remove from the cart by productId
-  void toggleCart(String productId) {
+  bool isCartItem(productId) {
     print(productId);
-    
+    return _items.containsKey(productId);
+  }
+
+  /// Add or remove from the cart by productId
+  void toggleCart(String productId) {    
     if (_items.containsKey(productId)) {
       _items.remove(productId);
     } else {

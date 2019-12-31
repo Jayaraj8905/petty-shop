@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './../models/product.dart';
+import './product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -53,56 +53,56 @@ class Products with ChangeNotifier {
       image: 'https://www.waangoo.com/content/images/thumbs/0012491_cadbury-dairy-milk_600.jpeg'
     ),
     Product(
-      id: '8',
+      id: '9',
       name: 'Murukku',
       description: 'Dhall',
       price: '0.50',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo7PdnetDJurTlKQFRmFzpuLXCKdT0oDd0fhOkA2RDGJQQe3ks&s'
     ),
     Product(
-      id: '9',
+      id: '10',
       name: 'Banana',
       description: 'About Ragi Flour',
       price: '2',
       image: 'https://api.time.com/wp-content/uploads/2019/11/gettyimages-459761948.jpg?w=600&quality=85'
     ),
     Product(
-      id: '10',
+      id: '11',
       name: 'Hamam Soap',
       description: 'About Ragi Flour',
       price: '30.00',
       image: 'https://www.waangoo.com/content/images/thumbs/0009971_hamam-soap-100gm_600.jpeg'
     ),
     Product(
-      id: '11',
+      id: '12',
       name: 'Cinthol',
       description: 'About the onion',
       price: '40.00',
       image: 'https://images-na.ssl-images-amazon.com/images/I/81aVEokflXL._SL1500_.jpg'
     ),
     Product(
-      id: '12',
+      id: '13',
       name: 'Brinjal',
       description: 'About the tomato',
       price: '43.00',
       image: 'https://5.imimg.com/data5/JD/VD/PH/ANDROID-51655394/product-jpeg-500x500.jpg'
     ),
     Product(
-      id: '13',
+      id: '14',
       name: 'Sugar',
       description: 'Sugar',
       price: '38.00',
       image: 'http://worldwidegeneral.com/wp-content/uploads/2017/08/20161023-Udhsugar-417x561.jpg'
     ),
     Product(
-      id: '14',
+      id: '15',
       name: 'Parachute',
       description: 'About Ragi Flour',
       price: '35.00',
       image: 'https://images-na.ssl-images-amazon.com/images/I/61D7y8hUGmL._SL1500_.jpg'
     ),
     Product(
-      id: '15',
+      id: '16',
       name: 'Peanut',
       description: 'About Ragi Flour',
       price: '4.00',
