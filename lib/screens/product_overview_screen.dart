@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import './../widgets/products_grid.dart';
 
-class ProductOverview extends StatelessWidget {
+class ProductOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,9 +10,7 @@ class ProductOverview extends StatelessWidget {
           'Jade Minimart'// TODO: Has to come from the shops list
         ),
       ),
-      body: Center(
-        child: Text('Product Oveview Screen Skeleton'),
-      ),
+      body: ProductsGrid() 
     );
   }
 
