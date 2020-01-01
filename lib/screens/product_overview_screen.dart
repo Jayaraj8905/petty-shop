@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import './../providers/cart.dart';
 import './../widgets/products_grid.dart';
 import './../widgets/badge.dart';
+import './cart_screen.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
   @override
@@ -18,7 +19,9 @@ class ProductOverviewScreen extends StatelessWidget {
               return Badge(
                 child: IconButton(
                   icon: Icon(Icons.shopping_cart),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.of(context).pushNamed(CartScreen.routeName)
+                  },
                 ),
                 value: cart.itemCount.toString(),
               );
