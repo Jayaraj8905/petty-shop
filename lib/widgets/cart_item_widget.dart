@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './../providers/cart.dart';
+import './counter.dart';
 
 class CartItemWidget extends StatelessWidget {
 
@@ -59,7 +60,15 @@ class CartItemWidget extends StatelessWidget {
             ),
             title: Text(name),
             subtitle: Text('Total: \$${price * unit_value}'),
-            trailing: Text('$unit_value x'),
+            trailing: Counter(
+              defaultVal: unit_value,
+              onCounter: (val) {
+                Provider.of<Cart>(context, listen: false).updateUnitValue(
+                  productId,
+                  val  
+                );
+              },
+            )
           ),
         ),
       ),
