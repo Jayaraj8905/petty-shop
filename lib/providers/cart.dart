@@ -6,8 +6,8 @@ import './../providers/products.dart';
 class CartItem {
   final String id;
   final String name;
-  final String unit_value;
-  final String price; 
+  final int unit_value;
+  final double price; 
 
   CartItem({
     @required this.id,
@@ -24,6 +24,14 @@ class Cart with ChangeNotifier {
 
   Map<String, CartItem> get items {
     return _items;
+  }
+
+  double get totalAmount {
+    var total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.unit_value;
+    });
+    return total;
   }
 
   int get itemCount {
@@ -45,7 +53,7 @@ class Cart with ChangeNotifier {
           id: new DateTime.now().toString(),
           name: product.name,
           price: product.price,
-          unit_value: "1"
+          unit_value: 1
         );
       });
     }
