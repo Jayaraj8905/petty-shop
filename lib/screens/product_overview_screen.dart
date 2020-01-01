@@ -17,7 +17,7 @@ class ProductOverviewScreen extends StatelessWidget {
             builder: (context, cart, _) {
               return Badge(
                 child: IconButton(
-                  icon: Icon(Icons.shopping_basket),
+                  icon: Icon(Icons.shopping_cart),
                   onPressed: () => {},
                 ),
                 value: cart.itemCount.toString(),
