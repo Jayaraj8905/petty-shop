@@ -60,5 +60,16 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-
+  /// Update the unitValue (quantity)
+  void updateUnitValue(String productId, int unitValue) {
+    _items.update(productId, (cart) {
+      return CartItem(
+        id: cart.id,
+        name: cart.name,
+        price: cart.price,
+        unit_value: unitValue
+      );
+    });
+    notifyListeners();
+  }
 }
