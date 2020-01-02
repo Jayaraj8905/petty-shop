@@ -59,6 +59,20 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
+  
+  /// Find the cart Item by the product id
+  CartItem findByProductId(String productId) {
+
+    if (items.length > 0) {
+      final cartMap = _items.entries.firstWhere((item) {
+        return item.key == productId;
+      }, orElse: () => null);
+      if (cartMap != null) {
+        return cartMap.value;
+      }
+    }
+    
+  }
 
   /// Update the unitValue (quantity)
   void updateUnitValue(String productId, int unitValue) {

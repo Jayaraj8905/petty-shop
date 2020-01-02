@@ -6,6 +6,32 @@ import './../providers/products.dart';
 
 class ProductDetailScreen extends StatelessWidget {
 
+  List<Widget> cartWidgets(CartItem cartItem, String productId, BuildContext context) {
+    List<Widget> list = [];
+    if (cartItem != null) {
+      list.add(Chip(
+        label: Text(
+          '\$${cartItem.price * cartItem.unit_value}',
+          style: TextStyle(
+            color: Theme.of(context).primaryTextTheme.title.color
+          ),
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+      ));
+
+      list.add(Counter(
+        defaultVal: cartItem.unit_value,
+        onCounter: (val) {
+          Provider.of<Cart>(context, listen: false).updateUnitValue(
+            productId,
+            val  
+          );
+        },
+      ));
+    }
+    return list;
+  }
+
   static const routeName = '/product-detail';
   @override
   Widget build(BuildContext context) {
@@ -59,6 +85,10 @@ class ProductDetailScreen extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: Consumer<Cart>(
               builder: (context, cart, _) {
+                final cartItem = Provider.of<Cart>(
+                  context,
+                  listen: false,
+                ).findByProductId(productId);
                 return Card(
                   elevation: 5.0,
                   child: Padding(
@@ -68,32 +98,13 @@ class ProductDetailScreen extends StatelessWidget {
                       children: <Widget>[
                         IconButton(
                           icon: Icon(
-                            cart.isCartItem(product.id) ? Icons.remove_shopping_cart : Icons.add_shopping_cart
+                            cartItem != null ? Icons.remove_shopping_cart : Icons.add_shopping_cart
                           ),
                           color: Theme.of(context).accentColor,
                           onPressed: () => cart.toggleCart(product.id),
                         ),
                         Spacer(),
-                        Chip(
-                          label: Text(
-                            '\$${cart.totalAmount}',
-                            style: TextStyle(
-                              color: Theme.of(context).primaryTextTheme.title.color
-                            ),
-                            
-                          ),
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        Counter(
-                          defaultVal: 1,
-                          onCounter: (val) {
-                            print(val);
-                            // Provider.of<Cart>(context, listen: false).updateUnitValue(
-                            //   productId,
-                            //   val  
-                            // );
-                          },
-                        )
+                        ...cartWidgets(cartItem, productId, context).toList()         
                       ],
                     ),
                     
