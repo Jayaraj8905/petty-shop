@@ -25,6 +25,11 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
       child: Column(
         children: <Widget>[
           ListTile(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;  
+              });
+            },
             leading: CircleAvatar(
               child: Padding(
                 padding: EdgeInsets.all(5),
@@ -35,14 +40,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
             ),
             title: Text('Order No: ${widget.order.id}'),
             subtitle: Text(DateFormat('dd MMM yyyy hh:mm').format(widget.order.createDate)),
-            trailing: IconButton(
-              icon: _isExpanded ? Icon(Icons.expand_less) : Icon(Icons.expand_more), 
-              onPressed: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;  
-                });
-              },
-            ),
+            trailing: _isExpanded ? Icon(Icons.expand_less) : Icon(Icons.expand_more)
           ),
           if (_isExpanded)
             Container(
