@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './../widgets/order_item_widget.dart';
 import './../providers/orders.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -12,9 +13,14 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('My Orders'),
       ),
-      body: Center(
-        child: Text('Orders Screen'),
-      ),
+      body: ListView.builder(
+        itemCount: orders.length,
+        itemBuilder: (ctx, index) {
+          return OrderItemWidget(
+            orders[index]
+          );
+        },
+      )
     );
   }
 

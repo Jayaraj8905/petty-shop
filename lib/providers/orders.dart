@@ -26,7 +26,7 @@ class Orders with ChangeNotifier {
   void addOrder(List<CartItem> products, double price) {
     _orders.insert(0, 
       OrderItem(
-        id: DateTime.now().millisecond,
+        id: DateTime.now().millisecondsSinceEpoch,
         products: products,
         price: price,
         createDate: DateTime.now()
