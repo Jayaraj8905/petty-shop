@@ -47,29 +47,26 @@ class CartItemWidget extends StatelessWidget {
           horizontal: 15,
           vertical: 10,
         ),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListTile(
-            leading: CircleAvatar(
-              child: Padding(
-                padding: EdgeInsets.all(5),
-                child: FittedBox(
-                  child: Text('\$$price'),
-                ),
+        child: ListTile(
+          leading: CircleAvatar(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: FittedBox(
+                child: Text('\$$price'),
               ),
             ),
-            title: Text(name),
-            subtitle: Text('Total: \$${price * unit_value}'),
-            trailing: Counter(
-              defaultVal: unit_value,
-              onCounter: (val) {
-                Provider.of<Cart>(context, listen: false).updateUnitValue(
-                  productId,
-                  val  
-                );
-              },
-            )
           ),
+          title: Text(name),
+          subtitle: Text('Total: \$${price * unit_value}'),
+          trailing: Counter(
+            defaultVal: unit_value,
+            onCounter: (val) {
+              Provider.of<Cart>(context, listen: false).updateUnitValue(
+                productId,
+                val  
+              );
+            },
+          )
         ),
       ),
     );

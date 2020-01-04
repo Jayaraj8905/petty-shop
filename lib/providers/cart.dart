@@ -62,7 +62,6 @@ class Cart with ChangeNotifier {
   
   /// Find the cart Item by the product id
   CartItem findByProductId(String productId) {
-
     if (items.length > 0) {
       final cartMap = _items.entries.firstWhere((item) {
         return item.key == productId;
@@ -71,8 +70,13 @@ class Cart with ChangeNotifier {
         return cartMap.value;
       }
     }
-    
   }
+
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
+
 
   /// Update the unitValue (quantity)
   void updateUnitValue(String productId, int unitValue) {

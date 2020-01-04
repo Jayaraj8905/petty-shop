@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import './../providers/cart.dart';
 import './../widgets/products_grid.dart';
 import './../widgets/badge.dart';
+import './../widgets/app_drawer.dart';
 import './cart_screen.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
@@ -30,7 +31,8 @@ class ProductOverviewScreen extends StatelessWidget {
           
         ],
       ),
-      body: ProductsGrid() 
+      body: ProductsGrid(),
+      drawer: AppDrawer(),
     );
   }
 
