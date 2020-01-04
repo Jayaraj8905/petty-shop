@@ -44,6 +44,14 @@ class CartScreen extends StatelessWidget {
                   FlatButton(
                     child: Text('Order now'),
                     onPressed: () {
+                      if (cart.itemCount == 0) {
+                        final snackBar = SnackBar(
+                          content: Text('No Items in the cart!!!'),
+                          duration: Duration(seconds: 1),
+                        );
+                        _scaffoldKey.currentState.showSnackBar(snackBar);
+                        return;
+                      }
                       Provider.of<Orders>(context, listen: false)
                       .addOrder(cart.items.values.toList(), cart.totalAmount);
                         final snackBar = SnackBar(
