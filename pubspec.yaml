@@ -29,6 +29,7 @@ dev_dependencies:
     sdk: flutter
   provider: ^3.0.0
   intl: ^0.15.8
+  http: 0.12.0+3
 
 
 # For information on the generic Dart part of this file, see the

@@ -48,7 +48,7 @@ class ProductItem extends StatelessWidget {
                     cart.isCartItem(product.id) ? Icons.remove_shopping_cart : Icons.add_shopping_cart
                   ),
                   color: Theme.of(context).accentColor,
-                  onPressed: () => cart.toggleCart(product.id),
+                  onPressed: () => cart.toggleCart(product),
                 );
               },
             ),

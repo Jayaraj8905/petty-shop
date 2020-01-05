@@ -41,28 +41,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  FlatButton(
-                    child: Text('Order now'),
-                    onPressed: () {
-                      if (cart.itemCount == 0) {
-                        final snackBar = SnackBar(
-                          content: Text('No Items in the cart!!!'),
-                          duration: Duration(seconds: 1),
-                        );
-                        _scaffoldKey.currentState.showSnackBar(snackBar);
-                        return;
-                      }
-                      Provider.of<Orders>(context, listen: false)
-                      .addOrder(cart.items.values.toList(), cart.totalAmount);
-                        final snackBar = SnackBar(
-                          content: Text('Ordered!!!'),
-                          duration: Duration(seconds: 1),
-                        );
-                        _scaffoldKey.currentState.showSnackBar(snackBar);
-                        cart.clear();
-                    },
-                    textColor: Theme.of(context).primaryColor,
-                  )
+                  OrderButton(cart: cart)
                 ],
               ),
             ),
@@ -84,6 +63,60 @@ class CartScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: _isLoading ? CircularProgressIndicator() : Text('Order now'),
+      // child: Text('Order now'),
+      onPressed: widget.cart.totalAmount <= 0 || _isLoading
+        ? null
+        : () async {
+            setState(() {
+              _isLoading = true;
+            });
+            try {
+              await Provider.of<Orders>(context, listen: false)
+              .addOrder(widget.cart.items.values.toList(), widget.cart.totalAmount);
+              setState(() {
+                _isLoading = false;
+              });
+              final snackBar = SnackBar(
+                content: Text('Order Placed!!!'),
+                duration: Duration(seconds: 1),
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+              widget.cart.clear();
+            } catch(e) {
+              setState(() {
+                _isLoading = false;
+              });
+              final snackBar = SnackBar(
+                content: Text('Order not Placed. Something went wrong!'),
+                duration: Duration(seconds: 1),
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            }
+            
+          },
+      textColor: Theme.of(context).primaryColor,
     );
   }
 }

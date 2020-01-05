@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './../providers/cart.dart';
+import './../providers/products.dart';
 import './counter.dart';
 
 class CartItemWidget extends StatelessWidget {
@@ -21,6 +22,7 @@ class CartItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Products>(context, listen: false).findById(productId);
     return Dismissible(
       key: ValueKey(id),
       background: Container(
@@ -38,7 +40,7 @@ class CartItemWidget extends StatelessWidget {
       ),
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).toggleCart(
-          productId
+          product
         );
       },
       direction: DismissDirection.endToStart,
