@@ -92,17 +92,29 @@ class _OrderButtonState extends State<OrderButton> {
             setState(() {
               _isLoading = true;
             });
-            await Provider.of<Orders>(context, listen: false)
+            try {
+              await Provider.of<Orders>(context, listen: false)
               .addOrder(widget.cart.items.values.toList(), widget.cart.totalAmount);
-            setState(() {
-              _isLoading = false;
-            });
-            final snackBar = SnackBar(
-              content: Text('Order Placed!!!'),
-              duration: Duration(seconds: 1),
-            );
-            Scaffold.of(context).showSnackBar(snackBar);
-            widget.cart.clear();
+              setState(() {
+                _isLoading = false;
+              });
+              final snackBar = SnackBar(
+                content: Text('Order Placed!!!'),
+                duration: Duration(seconds: 1),
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+              widget.cart.clear();
+            } catch(e) {
+              setState(() {
+                _isLoading = false;
+              });
+              final snackBar = SnackBar(
+                content: Text('Order not Placed. Something went wrong!'),
+                duration: Duration(seconds: 1),
+              );
+              Scaffold.of(context).showSnackBar(snackBar);
+            }
+            
           },
       textColor: Theme.of(context).primaryColor,
     );
