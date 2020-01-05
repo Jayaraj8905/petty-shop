@@ -31,22 +31,25 @@ class ProductOverviewScreen extends StatelessWidget {
           
         ],
       ),
-      body: FutureBuilder(
-        future: Provider.of<Products>(context, listen: false).fetchProducts(),
-        builder: (context, dataSnapshot) {
-          if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (dataSnapshot.hasError) {
-            return Center(
-              child: Text("Something went wrong!"),
-            );
-          } else {
-            return ProductsGrid();
-          }
-        },
+      body: RefreshIndicator(
+          onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
+          child: FutureBuilder(
+          future: Provider.of<Products>(context, listen: false).fetchProducts(),
+          builder: (context, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (dataSnapshot.hasError) {
+              return Center(
+                child: Text("Something went wrong!"),
+              );
+            } else {
+              return ProductsGrid();
+            }
+          },
+        ),
       ),
       drawer: AppDrawer(),
     );
