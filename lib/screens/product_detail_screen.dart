@@ -119,7 +119,7 @@ class ProductDetailScreen extends StatelessWidget {
                             cartItem != null ? Icons.remove_shopping_cart : Icons.add_shopping_cart
                           ),
                           color: Theme.of(context).accentColor,
-                          onPressed: () => cart.toggleCart(product.id),
+                          onPressed: () => cart.toggleCart(product),
                         ),
                         Spacer(),
                         ...cartWidgets(cartItem, productId, context).toList()         

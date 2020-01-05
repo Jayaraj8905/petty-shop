@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import './../providers/products.dart';
-
+import './../providers/product.dart';
 /// Individual Cart item
 
 class CartItem {
@@ -20,7 +19,6 @@ class CartItem {
 /// Cart
 class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
-  final products = Products();
 
   Map<String, CartItem> get items {
     return _items;
@@ -43,11 +41,10 @@ class Cart with ChangeNotifier {
   }
 
   /// Add or remove from the cart by productId
-  void toggleCart(String productId) {    
-    if (_items.containsKey(productId)) {
-      _items.remove(productId);
+  void toggleCart(Product product) {    
+    if (_items.containsKey(product.id)) {
+      _items.remove(product.id);
     } else {
-      final product = products.findById(productId);
       _items.putIfAbsent(product.id, () {
         return CartItem(
           id: new DateTime.now().toString(),
