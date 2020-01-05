@@ -13,32 +13,35 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('My Orders'),
       ),
-      body: FutureBuilder(
-        future: Provider.of<Orders>(context, listen: false).fetchOrders(),
-        builder: (context, dataSnapshot) {
-          if (dataSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (dataSnapshot.hasError) {
-            return Center(
-              child: Text('Something went wrong'),
-            );
-          } else {
-            return Consumer<Orders>(
-              builder: (context, orderData, child) => ListView.builder(
-                itemCount: orderData.orders.length,
-                itemBuilder: (ctx, index) {
-                  return OrderItemWidget(
-                    orderData.orders[index]
-                  );
-                },
-              ),
-            );
-          }
+      body: RefreshIndicator(
+        onRefresh: () => Provider.of<Orders>(context, listen: false).fetchOrders(),
+        child: FutureBuilder(
+          future: Provider.of<Orders>(context, listen: false).fetchOrders(),
+          builder: (context, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (dataSnapshot.hasError) {
+              return Center(
+                child: Text('Something went wrong'),
+              );
+            } else {
+              return Consumer<Orders>(
+                builder: (context, orderData, child) => ListView.builder(
+                  itemCount: orderData.orders.length,
+                  itemBuilder: (ctx, index) {
+                    return OrderItemWidget(
+                      orderData.orders[index]
+                    );
+                  },
+                ),
+              );
+            }
 
-        },
+          },
+        ),
       ),
       drawer: AppDrawer(),
     );
