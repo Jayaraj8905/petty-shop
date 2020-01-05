@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
 import './screens/product_overview_screen.dart';
 import './screens/cart_screen.dart';
+import './screens/auth_screen.dart';
 import './providers/cart.dart';
 import './providers/products.dart';
 import './providers/orders.dart';
@@ -34,7 +35,7 @@ class PettyShopApp extends StatelessWidget {
           fontFamily: 'Lato',
           splashColor: Colors.black87
         ),
-        home: ProductOverviewScreen(),
+        home: AuthScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
