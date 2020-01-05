@@ -25,7 +25,7 @@ class Orders with ChangeNotifier {
   }
 
   /// Add the order information
-  void addOrder(List<CartItem> products, double price) async {
+  Future<void> addOrder(List<CartItem> products, double price) async {
     final url = "https://petty-shop.firebaseio.com/orders.json";
     final timestamp = DateTime.now();
     try {
