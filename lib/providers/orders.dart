@@ -24,6 +24,38 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
+  Future<void> fetchOrders() async {
+    final url = "https://petty-shop.firebaseio.com/orders.json";
+    try {
+      final response = await http.get(url);
+      final data = json.decode(response.body) as Map<String, dynamic>;
+      if (data == null) {
+        return;
+      }
+      List<OrderItem> loadedOrders = [];
+      data.forEach((id, orderData) {
+        loadedOrders.add(OrderItem(
+          id: id,
+          price: orderData["price"].toDouble(),
+          createDate: DateTime.parse(orderData["createDate"]),
+          products: (orderData["products"] as List<dynamic>).map((item) {
+            return CartItem(
+              id: item["id"],
+              name: item["name"],
+              price: item["price"].toDouble(),
+              unit_value: item["unit_value"]
+            );
+          }).toList()
+        ));
+      });
+      notifyListeners();
+      _orders = loadedOrders.reversed.toList();
+    } catch(e) {
+      throw(e);
+    }
+    
+  }
+
   /// Add the order information
   Future<void> addOrder(List<CartItem> products, double price) async {
     final url = "https://petty-shop.firebaseio.com/orders.json";
