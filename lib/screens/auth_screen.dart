@@ -58,6 +58,10 @@ class AuthScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
+                  Flexible(
+                    flex: deviceSize.width > 600 ? 2 : 1,
+                    child: AuthCard(),      
                   )
                 ],
               ),
@@ -68,4 +72,64 @@ class AuthScreen extends StatelessWidget {
     );
   }
 
+}
+
+class AuthCard extends StatefulWidget {
+  @override
+  _AuthCardState createState() => _AuthCardState();
+}
+
+class _AuthCardState extends State<AuthCard> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  void _submit() {
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      elevation: 8.0,
+      child: Container(
+        // height: 320,
+        // constraints: BoxConstraints(minHeight: 320),
+        width: deviceSize.width * 0.75,
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'E-Mail'),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Password'),
+                ),
+                RaisedButton(
+                  child: Text('LOGIN'),
+                  onPressed: _submit,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).primaryTextTheme.button.color,
+                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                ),
+                FlatButton(
+                  onPressed: () => {}, 
+                  child: Text('SIGNUP INSTEAD'),
+                  padding: EdgeInsets.symmetric(horizontal: 30.0,  vertical: 8.0),
+                  textColor: Theme.of(context).primaryColor
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
