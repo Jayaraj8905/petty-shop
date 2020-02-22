@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+enum AuthMode { Login, Signup }
+
 class AuthScreen extends StatelessWidget {
   static const routeName ='/auth';
 
@@ -81,9 +83,22 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  AuthMode _authMode = AuthMode.Login;
 
   void _submit() {
 
+  }
+
+  void _switchAuthMode() {
+    if (_authMode == AuthMode.Signup) {
+      setState(() {
+        _authMode = AuthMode.Login;
+      });
+    } else if (_authMode == AuthMode.Login) {
+      setState(() {
+        _authMode = AuthMode.Signup;
+      });
+    }
   }
 
   @override
@@ -111,19 +126,25 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                 ),
+                if (_authMode == AuthMode.Signup)
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Confirm Password'),
+                  ),
+                SizedBox(height: 20),
                 RaisedButton(
-                  child: Text('LOGIN'),
-                  onPressed: _submit,
+                  child: Text('${_authMode == AuthMode.Signup ? 'SIGN UP' : 'LOGIN'}'),
+                  onPressed: _switchAuthMode,
                   color: Theme.of(context).primaryColor,
                   textColor: Theme.of(context).primaryTextTheme.button.color,
                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                 ),
-                FlatButton(
-                  onPressed: () => {}, 
-                  child: Text('SIGNUP INSTEAD'),
+                FlatButton( 
+                  child: Text('${_authMode == AuthMode.Signup ? 'LOGIN' : 'SIGN UP'} INSTEAD'),
+                  onPressed: _switchAuthMode,
                   padding: EdgeInsets.symmetric(horizontal: 30.0,  vertical: 8.0),
-                  textColor: Theme.of(context).primaryColor
+                  textColor: Theme.of(context).primaryColor,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 )
               ],
             ),
