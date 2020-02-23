@@ -8,6 +8,7 @@ import './providers/cart.dart';
 import './providers/products.dart';
 import './providers/orders.dart';
 import './screens/orders_screen.dart';
+import './providers/auth.dart';
 
 void main() => runApp(PettyShopApp());
 
@@ -17,6 +18,9 @@ class PettyShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: Auth()
+        ),
         ChangeNotifierProvider.value(
           value: Products(),
         ),
