@@ -125,10 +125,12 @@ class _AuthCardState extends State<AuthCard> {
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true
                 ),
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Confirm Password'),
+                    obscureText: true
                   ),
                 SizedBox(height: 20),
                 RaisedButton(
