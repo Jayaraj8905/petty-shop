@@ -84,9 +84,35 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
+  Map<String, String> _authData = {
+    'email': '',
+    'password': ''
+  };
+
+  var _isLoading = false;
+  final passwordController = TextEditingController();
 
   void _submit() {
+    if(!_formKey.currentState.validate()) {
+      // Invalid
+      return;
+    }
+    _formKey.currentState.save();
+    setState(() {
+      _isLoading = true;  
+    });
+    if (_authMode == AuthMode.Login) {
+      // Login here
+      print("Login success");
+    } else {
+      // Sign up here
+      print("Signup success");
+    }
 
+    setState(() {
+      _isLoading = false;
+    });
+    
   }
 
   void _switchAuthMode() {
@@ -122,25 +148,52 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value.isEmpty || !value.contains('@')) {
+                      return 'Invalid E-Mail';
+                    }
+                  },
+                  onSaved: (value) {
+                    _authData['email'] = value;
+                  },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true
+                  obscureText: true,
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value.isEmpty || value.length < 5) {
+                      return 'Password is too short';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _authData['password'] = value;
+                  },
                 ),
                 if (_authMode == AuthMode.Signup)
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true
+                    obscureText: true,
+                    validator: (value) {
+                      if (value != passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    }
                   ),
                 SizedBox(height: 20),
-                RaisedButton(
-                  child: Text('${_authMode == AuthMode.Signup ? 'SIGN UP' : 'LOGIN'}'),
-                  onPressed: _switchAuthMode,
-                  color: Theme.of(context).primaryColor,
-                  textColor: Theme.of(context).primaryTextTheme.button.color,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                ),
+                if (_isLoading)
+                  CircularProgressIndicator()
+                else
+                  RaisedButton(
+                    child: Text('${_authMode == AuthMode.Signup ? 'SIGN UP' : 'LOGIN'}'),
+                    onPressed: _submit,
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                    padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                  ),
                 FlatButton( 
                   child: Text('${_authMode == AuthMode.Signup ? 'LOGIN' : 'SIGN UP'} INSTEAD'),
                   onPressed: _switchAuthMode,
