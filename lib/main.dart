@@ -31,22 +31,25 @@ class PettyShopApp extends StatelessWidget {
           value: Orders(),
         )
       ],
-      child: MaterialApp(
-        title: 'Petty Shop',
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.deepOrangeAccent,
-          fontFamily: 'Lato',
-          splashColor: Colors.black87
+      child: Consumer<Auth>(
+        builder: (ctx, auth, _) => MaterialApp(
+          title: 'Petty Shop',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+            accentColor: Colors.deepOrangeAccent,
+            fontFamily: 'Lato',
+            splashColor: Colors.black87
+          ),
+          home: auth.isAuthenticated ? ProductOverviewScreen() : AuthScreen(),
+          routes: {
+            ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
+            ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            CartScreen.routeName: (ctx) => CartScreen(),
+            OrdersScreen.routeName: (ctx) => OrdersScreen()
+          },
         ),
-        home: AuthScreen(),
-        routes: {
-          ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
-          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          CartScreen.routeName: (ctx) => CartScreen(),
-          OrdersScreen.routeName: (ctx) => OrdersScreen()
-        },
-      ),
+      )
+      
     );
   }
 }

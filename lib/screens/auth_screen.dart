@@ -109,7 +109,6 @@ class _AuthCardState extends State<AuthCard> {
       if (_authMode == AuthMode.Login) {
         // Login here
         await Provider.of<Auth>(context, listen: false).login(_authData['email'], _authData['password']);
-        Navigator.of(context).pushReplacementNamed(ProductOverviewScreen.routeName);
       } else {
         // Sign up here
         await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
