@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:petty_shop/models/http_exception.dart';
 import 'package:provider/provider.dart';
 import './../providers/auth.dart';
+import 'product_overview_screen.dart';
 
 enum AuthMode { Login, Signup }
 
@@ -103,14 +105,32 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;  
     });
-    if (_authMode == AuthMode.Login) {
-      // Login here
-      await Provider.of<Auth>(context, listen: false).login(_authData['email'], _authData['password']);
-      print("Login success");
-    } else {
-      // Sign up here
-      await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
-      print("Signup success");
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Login here
+        await Provider.of<Auth>(context, listen: false).login(_authData['email'], _authData['password']);
+        Navigator.of(context).pushReplacementNamed(ProductOverviewScreen.routeName);
+      } else {
+        // Sign up here
+        await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
+      }
+    } on HttpException catch(error) {
+      var errorMessage = 'Authentication Failed';
+      if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email.';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid Password';
+      } else if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email id already exists';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address.';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak.';
+      }
+      _showErrorDialog(errorMessage);
+    } catch(error) {
+      var errorMessage = 'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
     }
 
     setState(() {
@@ -129,6 +149,22 @@ class _AuthCardState extends State<AuthCard> {
         _authMode = AuthMode.Signup;
       });
     }
+  }
+
+  void _showErrorDialog(errorMsg) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error occured'),
+        content: Text(errorMsg),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () => Navigator.pop(ctx), 
+            child: Text('Okay')
+          )
+        ],
+      )
+    );
   }
 
   @override

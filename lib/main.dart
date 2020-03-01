@@ -41,6 +41,7 @@ class PettyShopApp extends StatelessWidget {
         ),
         home: AuthScreen(),
         routes: {
+          ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
           OrdersScreen.routeName: (ctx) => OrdersScreen()

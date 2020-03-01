@@ -8,7 +8,9 @@ import './../widgets/app_drawer.dart';
 import './cart_screen.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
- 
+  
+  static const routeName = '/products';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
