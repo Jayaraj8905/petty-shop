@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './../screens/orders_screen.dart';
+import './../providers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
 
@@ -31,6 +33,32 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
+  logout(context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure to Logout?')
+              ],
+            )
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Provider.of<Auth>(context).logout();
+              },
+            )
+          ],
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -58,6 +86,15 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               leaveShop(context);
+            }
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.arrow_left),
+            title: Text('Logout!!'),
+            onTap: () {
+              Navigator.of(context).pop();
+              logout(context);
             }
           ),
         ],
