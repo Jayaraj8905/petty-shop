@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:petty_shop/models/http_exception.dart';
@@ -10,6 +12,7 @@ class Auth with ChangeNotifier {
   String _token;
   DateTime _expiry;
   String _userId;
+  Timer _timer;
 
   bool get isAuthenticated {
     return _token != null;
@@ -50,6 +53,7 @@ class Auth with ChangeNotifier {
           responseData['expiresIn']
         ))
       );
+      _autoLogout();
       notifyListeners();
     } catch(error) {
       throw error;
@@ -64,11 +68,20 @@ class Auth with ChangeNotifier {
   Future<void> login(String email, String password) async {
     return _authenticate(email, password, 'signInWithPassword');
   }
-
+  
   void logout() {
     _token = null;
     _expiry = null;
     _userId = null;
     notifyListeners();
+  }
+
+  void _autoLogout() {
+    if (_timer != null) {
+      _timer.cancel();
+    }
+
+    Duration duration = _expiry.difference(DateTime.now());
+    Timer(duration, logout);
   }
 }
