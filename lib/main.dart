@@ -4,10 +4,11 @@ import './screens/product_detail_screen.dart';
 import './screens/product_overview_screen.dart';
 import './screens/cart_screen.dart';
 import './screens/auth_screen.dart';
+import './screens/splash_screen.dart';
+import './screens/orders_screen.dart';
 import './providers/cart.dart';
 import './providers/products.dart';
 import './providers/orders.dart';
-import './screens/orders_screen.dart';
 import './providers/auth.dart';
 
 void main() => runApp(PettyShopApp());
@@ -53,7 +54,7 @@ class PettyShopApp extends StatelessWidget {
                   future: auth.tryAutoLogin(),
                   builder: (context, snapshot) => 
                     snapshot.connectionState == ConnectionState.waiting 
-                            ? Text('Loading')
+                            ? SplashScreen()
                             : AuthScreen()
                   
               ),
