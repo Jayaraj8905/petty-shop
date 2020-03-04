@@ -47,7 +47,16 @@ class PettyShopApp extends StatelessWidget {
             fontFamily: 'Lato',
             splashColor: Colors.black87
           ),
-          home: auth.isAuthenticated ? ProductOverviewScreen() : AuthScreen(),
+          home: auth.isAuthenticated 
+                ? ProductOverviewScreen() 
+                : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, snapshot) => 
+                    snapshot.connectionState == ConnectionState.waiting 
+                            ? Text('Loading')
+                            : AuthScreen()
+                  
+              ),
           routes: {
             ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
