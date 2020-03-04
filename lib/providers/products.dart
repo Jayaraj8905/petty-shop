@@ -8,8 +8,12 @@ class Products with ChangeNotifier {
    
   ];
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   Future<void> fetchProducts() async {
-    final url = "https://petty-shop.firebaseio.com/products.json";
+    final url = "https://petty-shop.firebaseio.com/products.json?auth=$authToken";
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
