@@ -29,12 +29,12 @@ class ProductItem extends StatelessWidget {
                 arguments: product.id
               );
             },
-            child: Center(
-              child: Image.network(
-                product.image,
-                fit: BoxFit.fill,
-              )
-            )
+            child: FadeInImage(
+              // TODO: REPLACE IT WITH THE FINAL OFFICIAL LOGO OF PETTY SHOP
+              placeholder: AssetImage('assets/images/placeholder.png'), 
+              image: NetworkImage(product.image),
+              fit: BoxFit.cover,
+            ),
           ),
           footer: GridTileBar(
             backgroundColor: Theme.of(context).splashColor,
