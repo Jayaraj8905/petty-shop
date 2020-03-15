@@ -62,14 +62,15 @@ class _CounterState extends State<Counter> {
             ),
             onPressed: () => onPress(false),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: FittedBox(child: 
-                Text('$counterVal')
-              ),
-            ),
-          ),
+          Text('$counterVal'),
+          // Expanded(
+          //   flex: 1,
+          //   child: Center(
+          //     child: FittedBox(child: 
+          //       Text('$counterVal')
+          //     ),
+          //   ),
+          // ),
           IconButton(
             padding: EdgeInsets.all(0),
             icon: Icon(

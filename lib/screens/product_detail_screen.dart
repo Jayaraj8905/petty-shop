@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
 import './../providers/cart.dart';
 import './../providers/products.dart';
-import './../screens/cart_screen.dart';
-import './../widgets/badge.dart';
 import './../widgets/counter.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -43,95 +42,78 @@ class ProductDetailScreen extends StatelessWidget {
       listen: false
     ).findById(productId);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          product.name
-        ),
-        actions: <Widget>[
-          Consumer<Cart>(
-            builder: (context, cart, _) {
-              return Badge(
-                child: IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: () => {
-                    Navigator.of(context).pushNamed(CartScreen.routeName)
-                  },
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(product.name),
+              background: Hero(
+                tag: product.id, 
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.cover,
+                )
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '\$${product.price}',
+                      style: Theme.of(context).textTheme.display1,
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${product.description}',
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                    ),
+                    SizedBox(height: 800,),
+                  ],
                 ),
-                value: cart.itemCount.toString(),
-              );
-            },
-          )
-          
+              ]
+          ))
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-            Container(
-              height: 300,
-              width: double.infinity,
-              padding: EdgeInsets.all(10),
-              child: Image.network(
-                product.image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              '\$${product.price}',
-              style: Theme.of(context).textTheme.display1,
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                '${product.description}',
-                style: Theme.of(context).textTheme.body1,
-              ),
-            ),
-          ],
-          ),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(8.0),
-            child: Consumer<Cart>(
-              builder: (context, cart, _) {
-                final cartItem = Provider.of<Cart>(
-                  context,
-                  listen: false,
-                ).findByProductId(productId);
-                return Card(
-                  elevation: 5.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            cartItem != null ? Icons.remove_shopping_cart : Icons.add_shopping_cart
-                          ),
-                          color: Theme.of(context).accentColor,
-                          onPressed: () => cart.toggleCart(product),
-                        ),
-                        Spacer(),
-                        ...cartWidgets(cartItem, productId, context).toList()         
-                      ],
-                    ),
-                    
+      bottomNavigationBar: BottomAppBar(
+        child: Consumer<Cart>(
+          builder: (context, cart, _) {
+            final cartItem = Provider.of<Cart>(
+              context,
+              listen: false,
+            ).findByProductId(productId);
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    cartItem != null ? Icons.remove_shopping_cart : Icons.add_shopping_cart
                   ),
-                ); 
-              }, 
-            ),
-          )
-        ]),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => cart.toggleCart(product),
+                ),
+                Spacer(),
+                ...cartWidgets(cartItem, productId, context).toList(),      
+              ],
+            ); 
+          }, 
+        ),
+      ),
+      floatingActionButton: CartAction(),
     );
   }
 
