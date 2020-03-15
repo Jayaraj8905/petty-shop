@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
 import './../providers/cart.dart';
 import './../providers/products.dart';
-import './../screens/cart_screen.dart';
-import './../widgets/badge.dart';
 import './../widgets/counter.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -108,21 +107,13 @@ class ProductDetailScreen extends StatelessWidget {
                   onPressed: () => cart.toggleCart(product),
                 ),
                 Spacer(),
-                ...cartWidgets(cartItem, productId, context).toList(),
-                Badge(
-                  child: IconButton(
-                    icon: Icon(Icons.shopping_cart),
-                    onPressed: () => {
-                      Navigator.of(context).pushNamed(CartScreen.routeName)
-                    },
-                  ),
-                  value: cart.itemCount.toString(),
-                )       
+                ...cartWidgets(cartItem, productId, context).toList(),      
               ],
             ); 
           }, 
         ),
       ),
+      floatingActionButton: CartAction(),
     );
   }
 

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
-import './../providers/cart.dart';
 import './../providers/products.dart';
 import './../widgets/products_grid.dart';
-import './../widgets/badge.dart';
 import './../widgets/app_drawer.dart';
-import './cart_screen.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
   
@@ -18,20 +16,6 @@ class ProductOverviewScreen extends StatelessWidget {
         title: Text(
           'Jade Minimart'// TODO: Has to come from the shops list
         ),
-        actions: <Widget>[
-          Consumer<Cart>(
-            builder: (context, cart, _) {
-              return Badge(
-                child: IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  onPressed: () => Navigator.of(context).pushNamed(CartScreen.routeName)
-                ),
-                value: cart.itemCount.toString(),
-              );
-            },
-          )
-          
-        ],
       ),
       body: RefreshIndicator(
           onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
@@ -54,6 +38,7 @@ class ProductOverviewScreen extends StatelessWidget {
         ),
       ),
       drawer: AppDrawer(),
+      floatingActionButton: CartAction(),
     );
   }
 }
