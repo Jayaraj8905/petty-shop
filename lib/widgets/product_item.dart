@@ -29,11 +29,14 @@ class ProductItem extends StatelessWidget {
                 arguments: product.id
               );
             },
-            child: FadeInImage(
-              // TODO: REPLACE IT WITH THE FINAL OFFICIAL LOGO OF PETTY SHOP
-              placeholder: AssetImage('assets/images/placeholder.png'), 
-              image: NetworkImage(product.image),
-              fit: BoxFit.cover,
+            child: Hero(
+                tag: product.id,
+                child: FadeInImage(
+                  // TODO: REPLACE IT WITH THE FINAL OFFICIAL LOGO OF PETTY SHOP
+                  placeholder: AssetImage('assets/images/placeholder.png'), 
+                  image: NetworkImage(product.image),
+                  fit: BoxFit.cover,
+              ),
             ),
           ),
           footer: GridTileBar(
