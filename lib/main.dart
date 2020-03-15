@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/helpers/custom_route.dart';
 import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
 import './screens/product_overview_screen.dart';
@@ -46,7 +47,13 @@ class PettyShopApp extends StatelessWidget {
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrangeAccent,
             fontFamily: 'Lato',
-            splashColor: Colors.black87
+            splashColor: Colors.black87,
+            pageTransitionsTheme: PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+                TargetPlatform.iOS: CustomPageTransitionBuilder()
+              }
+            )
           ),
           home: auth.isAuthenticated 
                 ? ProductOverviewScreen() 
