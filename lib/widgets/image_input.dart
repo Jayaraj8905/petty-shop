@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
   ImageInput({Key key}) : super(key: key);
@@ -8,10 +11,14 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
-  @override
+  File _image;
 
-  void _selectImage() {
-    
+  Future<void> _selectImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
   }
   Widget build(BuildContext context) {
     return Row(
@@ -22,7 +29,13 @@ class _ImageInputState extends State<ImageInput> {
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey)
           ),
-          child: Text('No image taken'),
+          child: _image == null 
+                  ? Text('No image taken')
+                  : Image.file(
+                      _image,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
           alignment: Alignment.center,
         ),
         Expanded(
