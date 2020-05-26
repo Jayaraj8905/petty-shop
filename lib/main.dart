@@ -35,8 +35,12 @@ class PettyShopApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
-        ChangeNotifierProvider.value(
-          value: Shops(),
+        ChangeNotifierProxyProvider<Auth, Shops>(
+          update: (ctx, auth, previousShops) => Shops(
+            auth.token,
+            auth.userId,
+            previousShops == null ? [] : previousShops.list
+          ), create: (BuildContext context) {},
         ),
         ChangeNotifierProxyProvider<Auth, Orders>(
           update: (ctx, auth, previousOrders) => Orders(

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 
 class Shops with ChangeNotifier {
   List<Shop> _list = [];
+  final String authToken;
+  final String userId;
+
+  Shops(this.authToken, this.userId, this._list);
 
   List<Shop> get list {
     return [..._list];
