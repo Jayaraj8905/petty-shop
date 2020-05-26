@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/screens/shop_list_screen.dart';
 import 'package:provider/provider.dart';
 import './../screens/orders_screen.dart';
 import './../providers/auth.dart';
@@ -70,8 +71,8 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.shop),
-            title: Text('Shop'),
-            onTap: () => Navigator.of(context).pushReplacementNamed('/'),
+            title: Text('Shops'),
+            onTap: () => Navigator.of(context).pushReplacementNamed(ShopListScreen.routeName),
           ),
           Divider(),
           ListTile(
