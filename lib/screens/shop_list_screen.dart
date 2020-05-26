@@ -22,7 +22,7 @@ class ShopListScreen extends StatelessWidget {
       ),
       body: Consumer<Shops>(
               child: Center(
-                child: Text('No shops nearby to you s!')
+                child: Text('No shops nearby to you!')
               ),
               builder: (ctx, shops, ch) => shops.list.length == 0 
                 ? ch
