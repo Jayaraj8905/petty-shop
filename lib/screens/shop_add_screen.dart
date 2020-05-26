@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/widgets/image_input.dart';
 
 class ShopAddScreen extends StatefulWidget {
   static const routeName ='/auth';
@@ -55,6 +56,7 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                           return null;
                         },
                       ),
+                      ImageInput(),
                       RaisedButton(
                         child: Text('Save'),
                         onPressed: () => _onSave(context),
