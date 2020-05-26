@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:petty_shop/widgets/image_input.dart';
+import 'package:petty_shop/widgets/image_input_field.dart';
 
 class ShopAddScreen extends StatefulWidget {
   static const routeName ='/auth';
@@ -13,9 +15,15 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
+  Map<String, dynamic> _formData = {
+    'shopname': null,
+    'image': null
+  };
+
   void _onSave(BuildContext context) {
     if (_formKey.currentState.validate()) {
-      print('Its valid');
+      _formKey.currentState.save();
+      print(_formData);
       // TODO: Save the data to firebase
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
@@ -55,8 +63,21 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                           }
                           return null;
                         },
+                        onSaved: (value) {
+                          _formData['shopname'] = value;
+                        },
                       ),
-                      ImageInput(),
+                      ImageInputField(
+                        validator: (File file) {
+                          if (file == null) {
+                            return 'Capture the image';
+                          }
+                          return null;
+                        },
+                        onSaved: (File file) {
+                          _formData['image'] = file;
+                        }
+                      ),
                       RaisedButton(
                         child: Text('Save'),
                         onPressed: () => _onSave(context),
