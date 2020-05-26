@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:petty_shop/providers/shops.dart';
+import 'package:petty_shop/screens/shop_list_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:petty_shop/widgets/image_input_field.dart';
 
 class ShopAddScreen extends StatefulWidget {
-  static const routeName ='/auth';
+  static const routeName ='/shop-add';
   ShopAddScreen({Key key}) : super(key: key);
 
   @override
@@ -23,13 +26,14 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
   void _onSave(BuildContext context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      print(_formData);
-      // TODO: Save the data to firebase
+      Provider.of<Shops>(context, listen: false)
+        .addShop(_formData['shopname'], _formData['image']);
       _scaffoldKey.currentState.showSnackBar(
         SnackBar(
-          content: Text('Shop has been Added'), 
+          content: Text('Shop has been Added asdfasda'), 
           duration: Duration(seconds: 2)
         ));
+      Navigator.of(context).pop();
     } else {
       
     }
