@@ -29,9 +29,17 @@ class ShopListScreen extends StatelessWidget {
                 : ListView.builder(
                     itemCount: shops.list.length,
                     itemBuilder: (ctx, i) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: FileImage(shopList[i].image),
-                      ),
+                      leading: shopList[i].image == null
+                        ? CircleAvatar(
+                          child: Text(
+                            shopList[i].name[0].toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                        ) 
+                        : CircleAvatar(
+                            backgroundImage: FileImage(shopList[i].image),
+                        ),
                       title: Text(shopList[i].name),
                       trailing: IconButton(
                         icon: Icon(Icons.input), 
