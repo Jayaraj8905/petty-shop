@@ -71,6 +71,9 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                           _formData['shopname'] = value;
                         },
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       ImageInputField(
                         validator: (File file) {
                           if (file == null) {
