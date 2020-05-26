@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 class Shops with ChangeNotifier {
   List<Shop> _list = [];
 
+  List<Shop> get list {
+    return [..._list];
+  }
+
   void addShop(String name, File image) {
     var id = _list.length.toString();
     _list.add(new Shop(id: id, name: name, image: image));
