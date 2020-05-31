@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/screens/shop_list_screen.dart';
+import 'package:petty_shop/widgets/location_input_field.dart';
 import 'package:provider/provider.dart';
 import 'package:petty_shop/widgets/image_input_field.dart';
 
@@ -89,6 +90,10 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                           _formData['image'] = file;
                         }
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      LocationInputField(),
                       if (_isCreating)
                         CircularProgressIndicator()
                       else
