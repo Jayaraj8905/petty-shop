@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>297754527623-oa57gqn1pboje6fknd88c6pj9etkkj17.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.297754527623-oa57gqn1pboje6fknd88c6pj9etkkj17</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDm_SjNUSEz5n4-hcggAydhWKcP9njubAM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>297754527623</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.pettyshop</string>
+	<key>PROJECT_ID</key>
+	<string>petty-shop</string>
+	<key>STORAGE_BUCKET</key>
+	<string>petty-shop.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:297754527623:ios:d2858de99210691afdb522</string>
+	<key>DATABASE_URL</key>
+	<string>https://petty-shop.firebaseio.com</string>
+</dict>
+</plist>

@@ -1,9 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:petty_shop/models/http_exception.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import './../providers/auth.dart';
-import 'product_overview_screen.dart';
 
 enum AuthMode { Login, Signup }
 
@@ -144,18 +143,10 @@ class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin
         // Sign up here
         await Provider.of<Auth>(context, listen: false).signup(_authData['email'], _authData['password']);
       }
-    } on HttpException catch(error) {
+    } on PlatformException catch(error) {
       var errorMessage = 'Authentication Failed';
-      if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid Password';
-      } else if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email id already exists';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email address.';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
+      if (error.message != null) {
+        errorMessage = error.message;
       }
       _showErrorDialog(errorMessage);
     } catch(error) {
