@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Shops with ChangeNotifier {
   List<Shop> _list = [];
@@ -16,18 +14,15 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> addShop(String name, File image) async {
-    final url = "https://petty-shop.firebaseio.com/shops/$userId.json?auth=$authToken";
     final timestamp = DateTime.now();
     try {
-      final response = await http.post(
-        url, 
-        body: json.encode({
-          "name": name,
-          "image": null,
-          "createDate": timestamp.toIso8601String(),
-        })
-      );
-      _list.insert(0, new Shop(id: json.decode(response.body)["name"], name: name, image: image));
+      final response = await Firestore.instance.collection('shops').add({
+        "name": name,
+        "image": null,
+        "createDate": timestamp.toIso8601String(),
+        "userId": userId
+      });
+      _list.insert(0, new Shop(id: response.documentID, name: name, image: image));
       notifyListeners();
     } catch (e) {
       throw(e);
@@ -35,18 +30,12 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> fetchShops() async {
-    final url = "https://petty-shop.firebaseio.com/shops/$userId.json?auth=$authToken";
     try {
-      final response = await http.get(url);
-      final data = json.decode(response.body) as Map<String, dynamic>;
-      if (data == null) {
-        return;
-      }
+      final response = await Firestore.instance.collection('shops').where('userId', isEqualTo: userId).getDocuments();
       List<Shop> _fetchedShops = [];
-      data.forEach((id, value) {
-        print(id);
+      response.documents.forEach((value) {
         _fetchedShops.add(new Shop(
-          id: id,
+          id: value.documentID,
           name: value["name"],
           image: value["image"]
         ));

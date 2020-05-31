@@ -66,7 +66,7 @@ class PettyShopApp extends StatelessWidget {
             )
           ),
           home: auth.isAuthenticated 
-                ? ProductOverviewScreen() 
+                ? ShopListScreen() 
                 : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (context, snapshot) => 
