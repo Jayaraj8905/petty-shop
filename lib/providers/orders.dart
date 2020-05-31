@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import './cart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderItem {
   final String id;
@@ -29,20 +29,15 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchOrders() async {
-    final url = "https://petty-shop.firebaseio.com/orders/$userId.json?auth=$authToken";
     try {
-      final response = await http.get(url);
-      final data = json.decode(response.body) as Map<String, dynamic>;
-      if (data == null) {
-        return;
-      }
+      final response = await Firestore.instance.collection('orders').where('userId', isEqualTo: userId).getDocuments();
       List<OrderItem> loadedOrders = [];
-      data.forEach((id, orderData) {
+      response.documents.forEach((orderData) {
         loadedOrders.add(OrderItem(
-          id: id,
+          id: orderData.documentID,
           price: orderData["price"].toDouble(),
           createDate: DateTime.parse(orderData["createDate"]),
-          products: (orderData["products"] as List<dynamic>).map((item) {
+          products: (json.decode(orderData["products"]) as List<dynamic>).map((item) {
             return CartItem(
               id: item["id"],
               name: item["name"],
@@ -62,30 +57,19 @@ class Orders with ChangeNotifier {
 
   /// Add the order information
   Future<void> addOrder(List<CartItem> products, double price) async {
-    final url = "https://petty-shop.firebaseio.com/orders/$userId.json?auth=$authToken";
     final timestamp = DateTime.now();
     try {
-      final response = await http.post(
-        url, 
-        body: json.encode({
-          "price": price,
-          "createDate": timestamp.toIso8601String(),
-          "products": products.map((cp) => {
-            "id": cp.id,
-            "name": cp.name,
-            "price": cp.price,
-            "unit_value": cp.unit_value
-          }).toList()
-        })
-      );
-      _orders.insert(0, 
-        OrderItem(
-          id: json.decode(response.body)["name"],
-          products: products,
-          price: price,
-          createDate: timestamp
-        )
-      );
+      await Firestore.instance.collection('orders').add({
+        "price": price,
+        "createDate": timestamp.toIso8601String(),
+        'userId': userId,
+        "products": json.encode(products.map((cp) => {
+          "id": cp.id,
+          "name": cp.name,
+          "price": cp.price,
+          "unit_value": cp.unit_value
+        }).toList())
+      });
       notifyListeners();
     } catch(e) {
       throw(e);

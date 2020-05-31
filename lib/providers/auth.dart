@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:petty_shop/models/http_exception.dart';
 import 'dart:convert';
-import './../constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 // Reference: https://firebase.google.com/docs/reference/rest/auth
@@ -30,55 +28,32 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  Future<void> _authenticate(String email, String password, String urlSegment) async {
-    final url = 'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$FIREBASE_API_KEY';
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode(
-          {
-            'email':  email,
-            'password': password,
-            'returnSecureToken': true
-          }
-        )
-      );
-      final responseData = json.decode(response.body);
-      if (responseData['error'] != null) {
-        throw new HttpException(responseData['error']['message']);
-      }
-      _token = responseData['idToken'];
-      _userId = responseData['localId'];
-      _expiry = DateTime.now().add(
-        Duration(seconds: int.parse(
-          responseData['expiresIn']
-        ))
-      );
-      _autoLogout();
-      notifyListeners();
+  Future<void> _authenticate(String email, String password, bool isLogin) async {
+    final auth = FirebaseAuth.instance;
+    AuthResult authResult;
 
-      // Shared the info to shared preferences
-      final prefs = await SharedPreferences.getInstance();
-      final userData = json.encode(
-        {
-          'token': _token,
-          'userId': _userId,
-          'expiry': _expiry.toIso8601String()
-        }
-      );
-      prefs.setString('userData', userData);
-    } catch(error) {
-      throw error;
+    try {
+      if (isLogin) {
+        authResult = await auth.signInWithEmailAndPassword(email: email, password: password);
+      } else {
+        authResult = await auth.createUserWithEmailAndPassword(email: email, password: password);
+      }
+      if(authResult.user != null) {
+        handleToken(authResult.user);
+        notifyListeners();
+      }
+    } catch (error) {
+      throw(error);
     }
     
   }
 
   Future<void> signup(String email, String password) async {
-    return _authenticate(email, password, 'signUp');
+    return _authenticate(email, password, false);
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, true);
   }
   
   Future<void> logout() async {
@@ -86,6 +61,7 @@ class Auth with ChangeNotifier {
     _expiry = null;
     _userId = null;
     notifyListeners();
+    FirebaseAuth.instance.signOut();
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
@@ -95,11 +71,14 @@ class Auth with ChangeNotifier {
       _timer.cancel();
     }
 
-    Duration duration = _expiry.difference(DateTime.now());
+    Duration duration = Duration(days: _expiry.day, hours: _expiry.hour, 
+                            minutes: _expiry.hour, seconds: _expiry.second, 
+                            milliseconds: _expiry.millisecond, microseconds: _expiry.microsecond);
     Timer(duration, logout);
   }
 
   Future<bool> tryAutoLogin() async {
+    // TODO: Needs to handle using firebase instead of sharedPreferences
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) {
       return false;
@@ -113,5 +92,24 @@ class Auth with ChangeNotifier {
     notifyListeners();
     _autoLogout();
     return true;
+  }
+
+  void handleToken(FirebaseUser user) async {
+    // TODO: Needs to handle using firebase instead of sharedPreferences
+    IdTokenResult tokenResult = await user.getIdToken();
+    _token = tokenResult.token;
+    _expiry = tokenResult.expirationTime;
+    _userId = user.uid;
+    _autoLogout();
+    // Shared the info to shared preferences
+    final prefs = await SharedPreferences.getInstance();
+    final userData = json.encode(
+      {
+        'token': _token,
+        'userId': _userId,
+        'expiry': _expiry.toIso8601String()
+      }
+    );
+    prefs.setString('userData', userData);
   }
 }
