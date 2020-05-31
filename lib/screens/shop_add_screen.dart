@@ -17,22 +17,26 @@ class ShopAddScreen extends StatefulWidget {
 class _ShopAddScreenState extends State<ShopAddScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  bool _isCreating = false;
 
   Map<String, dynamic> _formData = {
     'shopname': null,
     'image': null
   };
 
-  void _onSave(BuildContext context) {
+  void _onSave(BuildContext context) async {
     if (_formKey.currentState.validate()) {
+      setState(() {
+        _isCreating = true;
+      });
       _formKey.currentState.save();
-      Provider.of<Shops>(context, listen: false)
+      await Provider.of<Shops>(context, listen: false)
         .addShop(_formData['shopname'], _formData['image']);
-      _scaffoldKey.currentState.showSnackBar(
-        SnackBar(
-          content: Text('Shop has been Added asdfasda'), 
-          duration: Duration(seconds: 2)
-        ));
+      // _scaffoldKey.currentState.showSnackBar(
+      //   SnackBar(
+      //     content: Text('Shop has been Added asdfasda'), 
+      //     duration: Duration(seconds: 2)
+      //   ));
       Navigator.of(context).pop();
     } else {
       
@@ -85,14 +89,17 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                           _formData['image'] = file;
                         }
                       ),
-                      RaisedButton(
-                        child: Text('Save'),
-                        onPressed: () => _onSave(context),
-                        color: Theme.of(context).primaryColor,
-                        textColor: Theme.of(context).primaryTextTheme.button.color,
-                        padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                      )
+                      if (_isCreating)
+                        CircularProgressIndicator()
+                      else
+                        RaisedButton(
+                          child: Text('Save'),
+                          onPressed: () => _onSave(context),
+                          color: Theme.of(context).primaryColor,
+                          textColor: Theme.of(context).primaryTextTheme.button.color,
+                          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                        )
                     ],
                   ),
                 ),

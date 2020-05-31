@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -18,11 +19,22 @@ class Shops with ChangeNotifier {
     try {
       final response = await Firestore.instance.collection('shops').add({
         "name": name,
-        "image": null,
         "createDate": timestamp.toIso8601String(),
         "userId": userId
       });
-      _list.insert(0, new Shop(id: response.documentID, name: name, image: image));
+
+      // Image upload
+      // create the folder shops->{userId}->{shopid}->{timestamp in milliseconds}
+      final fileuploadRef = FirebaseStorage.instance.
+                            ref().child('shops').child(userId).child(name).child('image_' + timestamp.millisecondsSinceEpoch.toString() + '.jpg');
+      await fileuploadRef.putFile(image).onComplete;
+      final url = await fileuploadRef.getDownloadURL();
+
+      // update the image url
+      await response.updateData({
+        "image": url
+      });
+      await _list.insert(0, new Shop(id: response.documentID, name: name, image: url));
       notifyListeners();
     } catch (e) {
       throw(e);
@@ -55,7 +67,7 @@ class Shops with ChangeNotifier {
 class Shop {
   final String id;
   final String name;
-  final File image;
+  final String image;
   
   Shop({
     @required this.id,

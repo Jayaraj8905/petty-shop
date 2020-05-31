@@ -52,7 +52,7 @@ class ShopListScreen extends StatelessWidget {
                         ),
                       ) 
                       : CircleAvatar(
-                          backgroundImage: FileImage(shops.list[i].image),
+                          backgroundImage: NetworkImage(shops.list[i].image),
                       ),
                     title: Text(shops.list[i].name),
                     trailing: IconButton(
