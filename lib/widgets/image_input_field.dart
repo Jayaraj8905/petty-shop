@@ -48,54 +48,11 @@ class ImageInputField extends FormField<File> {
   );
 
   static Future<void> _selectImage(FormFieldState<File> state) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxWidth: 200
+    );
     state.didChange(image);
   }
 }
-// class ImageInput extends StatefulWidget {
-//   ImageInput({Key key}) : super(key: key);
-
-//   @override
-//   _ImageInputState createState() => _ImageInputState();
-// }
-
-// class _ImageInputState extends State<ImageInput> {
-//   File _image;
-
-//   Future<void> _selectImage() async {
-//     var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
-//     setState(() {
-//       _image = image;
-//     });
-//   }
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: <Widget>[
-//         Container(
-//           width: 150,
-//           height: 100,
-//           decoration: BoxDecoration(
-//             border: Border.all(width: 1, color: Colors.grey)
-//           ),
-//           child: _image == null 
-//                   ? Text('No image taken')
-//                   : Image.file(
-//                       _image,
-//                       fit: BoxFit.cover,
-//                       width: double.infinity,
-//                     ),
-//           alignment: Alignment.center,
-//         ),
-//         Expanded(
-//           child: FlatButton.icon(
-//             onPressed: _selectImage, 
-//             icon: Icon(Icons.add_a_photo),
-//             label: Text('Take/Select Picture'),
-//             textColor: Theme.of(context).primaryColor,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
