@@ -30,6 +30,10 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchOrders() async {
     try {
+      // TODO: JUST A HANDLER TO AVOID FETCHING DATA (DUE TO THE PROBLEM IN LOGOUT)
+      if (userId == null) {
+        throw('Error');
+      }
       final response = await Firestore.instance.collection('orders').where('userId', isEqualTo: userId).getDocuments();
       List<OrderItem> loadedOrders = [];
       response.documents.forEach((orderData) {

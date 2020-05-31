@@ -31,6 +31,10 @@ class Shops with ChangeNotifier {
 
   Future<void> fetchShops() async {
     try {
+      // TODO: JUST A HANDLER TO AVOID FETCHING DATA (DUE TO THE PROBLEM IN LOGOUT)
+      if (userId == null) {
+        throw('Error');
+      }
       final response = await Firestore.instance.collection('shops').where('userId', isEqualTo: userId).getDocuments();
       List<Shop> _fetchedShops = [];
       response.documents.forEach((value) {
