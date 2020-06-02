@@ -82,12 +82,12 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                         height: 20,
                       ),
                       ImageInputField(
-                        // validator: (File file) {
-                        //   if (file == null) {
-                        //     return 'Capture the image';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (File file) {
+                          if (file == null) {
+                            return 'Capture the image';
+                          }
+                          return null;
+                        },
                         onSaved: (File file) {
                           _formData['image'] = file;
                         }
