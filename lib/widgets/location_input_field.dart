@@ -30,6 +30,10 @@ class _LocationInputFieldState extends State<LocationInputField> {
         builder: (ctx) => MapScreen(locationDetails: locationDetails,preview: true)
       )
     );
+    final staticUrl = LocationHelper.generateLocationPreviewImage(latitude: locationData.latitude, longitude: locationData.longitude);
+    setState(() {
+      _locationUrl = staticUrl;
+    });
   }
 
   @override
