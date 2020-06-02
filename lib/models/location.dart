@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
-class Location {
+class LocationDetails {
   final double latitude;
   final double longitude;
   final String address;
-  const Location({
+  const LocationDetails({
     @required this.latitude,
     @required this.longitude,
     this.address

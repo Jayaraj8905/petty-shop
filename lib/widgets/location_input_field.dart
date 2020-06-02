@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:petty_shop/models/location.dart';
+import 'package:petty_shop/screens/map_screen.dart';
 import './../helpers/location_helper.dart';
 
 class LocationInputField extends StatefulWidget {
@@ -18,6 +20,17 @@ class _LocationInputFieldState extends State<LocationInputField> {
       _locationUrl = staticUrl;
     });
   } 
+
+  Future<void> _pickLocation() async {
+    final currentLocation = await Location().getLocation();
+    final locationDetails = LocationDetails(latitude: currentLocation.latitude, longitude: currentLocation.longitude);
+    final locationData = await Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (ctx) => MapScreen(locationDetails: locationDetails,preview: true)
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +64,7 @@ class _LocationInputFieldState extends State<LocationInputField> {
               textColor: Theme.of(context).primaryColor,
             ),
             FlatButton.icon(
-              onPressed: () => {}, 
+              onPressed: _pickLocation, 
               icon: Icon(Icons.map), 
               label: Text('Select on Map'),
               textColor: Theme.of(context).primaryColor,
