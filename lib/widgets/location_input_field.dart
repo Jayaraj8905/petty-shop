@@ -54,6 +54,21 @@ class LocationInputField extends FormField<LocationDetails> {
                     width: double.infinity,
                   ),
           ),
+          if (state.hasError)
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 6),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  state.errorText,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Theme.of(state.context).errorColor,
+                    fontSize: 12
+                  )
+                ),
+              ),
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
