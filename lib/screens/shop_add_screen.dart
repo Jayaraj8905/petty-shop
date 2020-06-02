@@ -51,7 +51,16 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add your shop')
+        title: Text('Add your shop'),
+        actions: <Widget>[
+          if (_isCreating)
+            CircularProgressIndicator()
+          else
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () => _onSave(context),
+            )
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,18 +114,7 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                         onSaved: (LocationDetails locationDetails) {
                           _formData['locationDetails'] = locationDetails;
                         }
-                      ),
-                      if (_isCreating)
-                        CircularProgressIndicator()
-                      else
-                        RaisedButton(
-                          child: Text('Save'),
-                          onPressed: () => _onSave(context),
-                          color: Theme.of(context).primaryColor,
-                          textColor: Theme.of(context).primaryTextTheme.button.color,
-                          padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                        )
+                      )
                     ],
                   ),
                 ),

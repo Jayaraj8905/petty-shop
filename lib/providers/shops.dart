@@ -21,7 +21,8 @@ class Shops with ChangeNotifier {
       final response = await Firestore.instance.collection('shops').add({
         "name": name,
         "createDate": timestamp.toIso8601String(),
-        "userId": userId
+        "userId": userId,
+        "location": new GeoPoint(locationDetails.latitude, locationDetails.longitude)
       });
 
       // Image upload
@@ -35,7 +36,7 @@ class Shops with ChangeNotifier {
       await response.updateData({
         "image": url
       });
-      await _list.insert(0, new Shop(id: response.documentID, name: name, image: url));
+      _list.insert(0, new Shop(id: response.documentID, name: name, image: url, locationDetails: locationDetails));
       notifyListeners();
     } catch (e) {
       throw(e);
@@ -51,10 +52,12 @@ class Shops with ChangeNotifier {
       final response = await Firestore.instance.collection('shops').where('userId', isEqualTo: userId).getDocuments();
       List<Shop> _fetchedShops = [];
       response.documents.forEach((value) {
+        final GeoPoint location = value["location"];
         _fetchedShops.add(new Shop(
           id: value.documentID,
           name: value["name"],
-          image: value["image"]
+          image: value["image"],
+          locationDetails: new LocationDetails(latitude: location.latitude, longitude: location.longitude)
         ));
       });
       _list = _fetchedShops.reversed.toList();
@@ -69,10 +72,12 @@ class Shop {
   final String id;
   final String name;
   final String image;
+  final LocationDetails locationDetails;
   
   Shop({
     @required this.id,
     @required this.name,
-    @required this.image
+    @required this.image,
+    @required this.locationDetails
   });
 }
