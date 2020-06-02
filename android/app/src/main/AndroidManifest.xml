@@ -9,6 +9,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="petty_shop"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCFniYiWR3GhnRrn9GOb6UvmapkmVZcL8w"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
