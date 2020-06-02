@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petty_shop/models/location.dart';
 
 class Shops with ChangeNotifier {
   List<Shop> _list = [];
@@ -14,7 +15,7 @@ class Shops with ChangeNotifier {
     return [..._list];
   }
 
-  Future<void> addShop(String name, File image) async {
+  Future<void> addShop(String name, File image, LocationDetails locationDetails) async {
     final timestamp = DateTime.now();
     try {
       final response = await Firestore.instance.collection('shops').add({

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:petty_shop/models/location.dart';
 import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/screens/shop_list_screen.dart';
 import 'package:petty_shop/widgets/location_input_field.dart';
@@ -31,8 +32,9 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
         _isCreating = true;
       });
       _formKey.currentState.save();
+      print(_formData['locationDetails']);
       await Provider.of<Shops>(context, listen: false)
-        .addShop(_formData['shopname'], _formData['image']);
+        .addShop(_formData['shopname'], _formData['image'], _formData['locationDetails']);
       // _scaffoldKey.currentState.showSnackBar(
       //   SnackBar(
       //     content: Text('Shop has been Added asdfasda'), 
@@ -93,7 +95,17 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      LocationInputField(),
+                      LocationInputField(
+                        validator: (LocationDetails details) {
+                          if (details == null) {
+                            return 'Select the Location';
+                          }
+                          return null;
+                        },
+                        onSaved: (LocationDetails locationDetails) {
+                          _formData['locationDetails'] = locationDetails;
+                        }
+                      ),
                       if (_isCreating)
                         CircularProgressIndicator()
                       else
