@@ -32,7 +32,6 @@ class _ShopAddScreenState extends State<ShopAddScreen> {
         _isCreating = true;
       });
       _formKey.currentState.save();
-      print(_formData['locationDetails']);
       await Provider.of<Shops>(context, listen: false)
         .addShop(_formData['shopname'], _formData['image'], _formData['locationDetails']);
       // _scaffoldKey.currentState.showSnackBar(
