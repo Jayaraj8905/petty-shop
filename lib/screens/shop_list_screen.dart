@@ -7,6 +7,7 @@ import 'package:petty_shop/providers/shops.dart';
 
 class ShopListScreen extends StatelessWidget {
   static const routeName = '/shops'; 
+  double radius = 5;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +21,9 @@ class ShopListScreen extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => Provider.of<Shops>(context, listen: false).fetchShops(),
+        onRefresh: () => Provider.of<Shops>(context, listen: false).fetchShops(radius: this.radius),
         child: FutureBuilder(
-          future: Provider.of<Shops>(context, listen: false).fetchShops(),
+          future: Provider.of<Shops>(context, listen: false).fetchShops(radius: this.radius),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
