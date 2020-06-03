@@ -55,8 +55,10 @@ class Shops with ChangeNotifier {
       }
 
       List<DocumentSnapshot> documents;
-      CollectionReference collectionReference = Firestore.instance.collection('shops');
-      // collectionReference.where('userId', isEqualTo: userId);
+      Query collectionReference = Firestore.instance.collection('shops').reference();
+      // collectionReference = collectionReference.where('userId', isEqualTo: userId);
+      // collectionReference = collectionReference.limit(1);
+      
       // if radius is there construct the center point based on the locationDetails and query using geofire.. This one should be happen at the last of all the where conditions
       if (radius != null) {
         // check whether the location details is available
