@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:petty_shop/providers/products.dart';
+import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/widgets/image_input_field.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +40,12 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments;
+    final Shop shop = arguments['shop'];
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add your product'),
+        title: Text('Add product'),
         actions: <Widget>[
           if (_isCreating)
             CircularProgressIndicator()
@@ -76,6 +79,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         },
                         onSaved: (value) {
                           _formData['productname'] = value;
+                          _formData['shopId'] = shop.id;
                         },
                       ),
                       SizedBox(

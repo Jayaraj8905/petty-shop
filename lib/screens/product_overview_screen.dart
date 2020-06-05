@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/screens/product_add_screen.dart';
 import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
@@ -12,16 +13,20 @@ class ProductOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments = ModalRoute.of(context).settings.arguments;
+    final Shop shop = arguments['shop'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Jade Minimart'// TODO: Has to come from the shops list
+          shop.name
         ),
         // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add), 
-            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName)
+            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: {
+              'shop': shop
+            })
           )
         ],
       ),
