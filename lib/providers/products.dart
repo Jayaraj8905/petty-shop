@@ -85,6 +85,7 @@ class Products with ChangeNotifier {
       );
       notifyListeners();
     } catch (e) {
+      throw(e);
     }
   }
 
