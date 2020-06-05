@@ -2,7 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
+
+enum ImageInputFieldSource  {
+  camera,
+  gallery,
+  url
+}
 class ImageInputField extends FormField<File> {
   ImageInputField({
     FormFieldSetter<File> onSaved,
@@ -15,6 +24,80 @@ class ImageInputField extends FormField<File> {
     initialValue: initialValue,
     autovalidate: autovalidate,
     builder: (FormFieldState<File> state) {
+
+      Future<ImageInputFieldSource> _selectSource() async {
+        return await showDialog(
+          context: state.context,
+          builder: (ctx) => SimpleDialog(
+            title: const Text('Choose from'),
+            children: <Widget>[
+              SimpleDialogOption(
+                onPressed: () { Navigator.of(state.context).pop(ImageInputFieldSource.gallery); },
+                child: const Text('Gallery'),
+              ),
+              SimpleDialogOption(
+                onPressed: () { Navigator.of(state.context).pop(ImageInputFieldSource.camera); },
+                child: const Text('Camera'),
+              ),
+              SimpleDialogOption(
+                onPressed: () { Navigator.of(state.context).pop(ImageInputFieldSource.url); },
+                child: const Text('Paste the URL'),
+              )
+            ],
+          )
+        );
+      }
+
+      Future<String> _getURLDialog() async {
+        return await showDialog(
+          context: state.context,
+          builder: (ctx) => SimpleDialog(
+            title: const Text('Paste URL'),
+            children: <Widget>[
+              HttpUrlDialog(
+                onSubmit: (url) => Navigator.of(state.context).pop(url),
+              )
+            ],
+          )
+        );
+      }
+
+      Future<void> _selectImage(FormFieldState<File> state) async {
+        try {
+          File image;
+          // show the popup for the source selection
+          final selection = await _selectSource();
+
+          if (selection == ImageInputFieldSource.url) {
+            final url = await _getURLDialog();
+            // show the dialog once again for the url input
+            if (url != null) {
+              try {
+                final response = await http.get(url);
+                Directory tempDir = await getTemporaryDirectory();
+                String tempPath = tempDir.path;
+                final ext = path.extension(url);
+                final filename = DateTime.now().millisecondsSinceEpoch.toString();
+                image = File('$tempPath/$filename$ext');
+                image.writeAsBytes(response.bodyBytes);  
+              } catch (e) {
+                throw(e);
+              }
+            }
+          } else {
+            // pick using image picker
+            image = await ImagePicker.pickImage(
+              source: selection == ImageInputFieldSource.camera ? ImageSource.camera : ImageSource.gallery,
+              imageQuality: 50,
+              maxWidth: 200
+            );
+          }
+          state.didChange(image);  
+        } catch (e) {
+          print(e);
+        }
+        
+      }
       return Column(
         children: <Widget>[
           Row(
@@ -65,13 +148,70 @@ class ImageInputField extends FormField<File> {
       );
     }
   );
+}
 
-  static Future<void> _selectImage(FormFieldState<File> state) async {
-    var image = await ImagePicker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 50,
-      maxWidth: 200
+
+class HttpUrlDialog extends StatefulWidget {
+  final Function onSubmit;
+  HttpUrlDialog({Key key, this.onSubmit}) : super(key: key);
+
+  @override
+  _HttpUrlDialogState createState() => _HttpUrlDialogState();
+}
+
+class _HttpUrlDialogState extends State<HttpUrlDialog> {
+  final _form = GlobalKey<FormState>();
+  String url;
+  
+  _saveURL() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
+    _form.currentState.save();
+    widget.onSubmit(url);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Form(
+        key: _form,
+        child: Container(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: TextFormField(
+                  onSaved: (value) {
+                    url = value;
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter an image URL.';
+                    }
+                    if (!value.startsWith('http') &&
+                        !value.startsWith('https')) {
+                      return 'Please enter a valid URL.';
+                    }
+                    if (!value.endsWith('.png') &&
+                        !value.endsWith('.jpg') &&
+                        !value.endsWith('.jpeg')) {
+                      return 'Please enter a valid image URL.';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.send), 
+                onPressed: () {
+                  _saveURL();
+                }
+              )
+            ],
+          )
+          // child: TextFormField()
+        ),
+      ),
     );
-    state.didChange(image);
   }
 }
