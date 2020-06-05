@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petty_shop/screens/product_add_screen.dart';
 import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
 import './../providers/products.dart';
@@ -16,6 +17,13 @@ class ProductOverviewScreen extends StatelessWidget {
         title: Text(
           'Jade Minimart'// TODO: Has to come from the shops list
         ),
+        // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add), 
+            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName)
+          )
+        ],
       ),
       body: RefreshIndicator(
           onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),

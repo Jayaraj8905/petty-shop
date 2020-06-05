@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petty_shop/helpers/custom_route.dart';
 import 'package:petty_shop/providers/shops.dart';
+import 'package:petty_shop/screens/product_add_screen.dart';
 import 'package:petty_shop/screens/shop_add_screen.dart';
 import 'package:petty_shop/screens/shop_list_screen.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +79,7 @@ class PettyShopApp extends StatelessWidget {
           routes: {
             ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            ProductAddScreen.routeName: (ctx) => ProductAddScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
             ShopAddScreen.routeName: (ctx) => ShopAddScreen(),
