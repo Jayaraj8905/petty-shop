@@ -20,8 +20,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
   bool _isCreating = false;
 
   Map<String, dynamic> _formData = {
-    'productname': null,
-    'image': null
+    'name': null,
+    'image': null,
+    'shopId': null,
+    'price': null,
+    'description': null
   };
 
   Future<void> _onSave(BuildContext context) async {
@@ -32,6 +35,14 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       _formKey.currentState.save();
       // await Provider.of<Products>(context, listen: false).addProduct();
       print(_formData);
+
+      await Provider.of<Products>(context, listen: false).addProduct(
+        name: _formData['name'],
+        description: _formData['description'],
+        price: _formData['price'],
+        image: _formData['image'],
+        shopId: _formData['shopId']
+      );
       Navigator.of(context).pop();
     } else {
       
@@ -69,7 +80,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     children: <Widget>[
                       TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Product Name'
+                          labelText: 'Name'
                         ),
                         validator: (value) {
                           if (value.isEmpty) {
@@ -78,9 +89,43 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          _formData['productname'] = value;
+                          _formData['name'] = value;
                           _formData['shopId'] = shop.id;
                         },
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          labelText: 'Description'
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Invalid Product description';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _formData['description'] = value;
+                        }
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Price'
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty || double.tryParse(value) == null) {
+                            return 'Invalid Price';
+                          }
+                          if (double.parse(value) <= 0) {
+                            return 'Enter price greater than 0';
+                          }  
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _formData['price'] = double.tryParse(value);
+                        }
                       ),
                       SizedBox(
                         height: 20,
