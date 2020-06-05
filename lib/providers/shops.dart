@@ -30,7 +30,7 @@ class Shops with ChangeNotifier {
       });
 
       // Image upload
-      // create the folder shops->{shopid}->{timestamp in milliseconds}
+      // create the folder shops->{shopid}->image_{timestamp in milliseconds}
       final fileuploadRef = FirebaseStorage.instance.
                             ref().child('shops').child(response.documentID).child('image_' + timestamp.millisecondsSinceEpoch.toString() + '.jpg');
       await fileuploadRef.putFile(image).onComplete;
