@@ -54,8 +54,10 @@ class ImageInputField extends FormField<File> {
           builder: (ctx) => SimpleDialog(
             title: const Text('Paste URL'),
             children: <Widget>[
-              HttpUrlDialog(
-                onSubmit: (url) => Navigator.of(state.context).pop(url),
+              SimpleDialogOption(
+                child: HttpUrlDialog(
+                  onSubmit: (url) => Navigator.of(state.context).pop(url),
+                ),
               )
             ],
           )
@@ -84,7 +86,7 @@ class ImageInputField extends FormField<File> {
                 throw(e);
               }
             }
-          } else {
+          } else if (selection == ImageInputFieldSource.camera || selection == ImageInputFieldSource.gallery){
             // pick using image picker
             image = await ImagePicker.pickImage(
               source: selection == ImageInputFieldSource.camera ? ImageSource.camera : ImageSource.gallery,
@@ -178,6 +180,7 @@ class _HttpUrlDialogState extends State<HttpUrlDialog> {
         key: _form,
         child: Container(
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Expanded(
                 child: TextFormField(
