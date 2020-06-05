@@ -96,7 +96,7 @@ class ImageInputField extends FormField<File> {
           }
           state.didChange(image);  
         } catch (e) {
-          print(e);
+          throw(e);
         }
         
       }

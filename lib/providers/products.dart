@@ -94,7 +94,6 @@ class Products with ChangeNotifier {
       final response = await Firestore.instance.collection('shop_products').reference().where('field', isEqualTo: 'test').getDocuments();
       List<Product> loadedProducts = [];
       response.documents.forEach((product) {
-        print(product);
       });
       _items = loadedProducts;
       notifyListeners();
