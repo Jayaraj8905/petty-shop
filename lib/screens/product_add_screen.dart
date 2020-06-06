@@ -36,11 +36,11 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       // await Provider.of<Products>(context, listen: false).addProduct();
 
       await Provider.of<Products>(context, listen: false).addShopProduct(
+        _formData['shopId'],
         name: _formData['name'],
         description: _formData['description'],
         price: _formData['price'],
-        image: _formData['image'],
-        shopId: _formData['shopId']
+        image: _formData['image']
       );
       Navigator.of(context).pop();
     } else {

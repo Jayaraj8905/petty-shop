@@ -44,7 +44,7 @@ class Products with ChangeNotifier {
   }
 
   /// Add the product to the shop products
-  Future<void> addShopProduct({String name, String description, double price, File image, String shopId}) async {
+  Future<void> addShopProduct(String shopId, {String name, String description, double price, File image}) async {
     final timestamp = DateTime.now();
     // TODO: FOLLOW THE TRANSACTION METHODOLOGY
     try {
