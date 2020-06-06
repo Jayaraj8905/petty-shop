@@ -31,9 +31,9 @@ class ProductOverviewScreen extends StatelessWidget {
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
+          onRefresh: () => Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
           child: FutureBuilder(
-          future: Provider.of<Products>(context, listen: false).fetchProducts(),
+          future: Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(

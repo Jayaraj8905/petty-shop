@@ -49,7 +49,7 @@ class Products with ChangeNotifier {
     // TODO: FOLLOW THE TRANSACTION METHODOLOGY
     try {
       // Normalization
-      name = name.toLowerCase();
+      // name = name.toLowerCase();
       // Fetch the shop details from the shop id
       
       // Check the user is the shop owner or shop seller
@@ -89,11 +89,20 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> fetchByShopProducts() async {
+  Future<void> fetchByShopProducts(String shopId, {String name}) async {
     try {
-      final response = await Firestore.instance.collection('shop_products').reference().where('field', isEqualTo: 'test').getDocuments();
+      final documents = await _getShopProduct(shopId, name: name);
       List<Product> loadedProducts = [];
-      response.documents.forEach((product) {
+      documents.forEach((product) {
+        loadedProducts.add(
+          Product(
+            id: product.documentID,
+            name: product["name"],
+            price: product["price"].toDouble(),
+            description: product["description"],
+            image: product["image"]
+          )
+        );
       });
       _items = loadedProducts;
       notifyListeners();
@@ -184,14 +193,15 @@ class Products with ChangeNotifier {
   }
 
   /// Helper to get the products
-  Future<QuerySnapshot> _getShopProduct({String shopId, String name}) async {
-    Query collectionReference = Firestore.instance.collection('products').reference();
+  Future<List<DocumentSnapshot>> _getShopProduct(String shopId, {String name}) async {
+    Query collectionReference = Firestore.instance.collection('shop_products').reference();
     if (shopId != null) {
       collectionReference = collectionReference.where('shopId', isEqualTo: shopId);
     }
     if (name != null) {
       collectionReference = collectionReference.where('name', isEqualTo: name);
     }
-    return await collectionReference.getDocuments();
+    final response = await collectionReference.getDocuments();
+    return response.documents;
   }
 }
