@@ -35,7 +35,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       _formKey.currentState.save();
       // await Provider.of<Products>(context, listen: false).addProduct();
 
-      await Provider.of<Products>(context, listen: false).addProduct(
+      await Provider.of<Products>(context, listen: false).addShopProduct(
         name: _formData['name'],
         description: _formData['description'],
         price: _formData['price'],
