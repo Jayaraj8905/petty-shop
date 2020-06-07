@@ -14,20 +14,19 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context).settings.arguments;
-    final Shop shop = arguments['shop'];
+    final String shopId = ModalRoute.of(context).settings.arguments as String;
+    final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          shop.name + 'Here'
+          shop.name
         ),
         // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add), 
-            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: {
-              'shop': shop
-            })
+            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: shop.id)
           )
         ],
       ),

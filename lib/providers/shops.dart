@@ -60,7 +60,11 @@ class Shops with ChangeNotifier {
     }
   }
 
-
+  Shop findById(String id) {
+    return _list.firstWhere((shop) {
+      return shop.id == id;
+    });
+  }
 
   /// HELPERS WILL BE ADDED BELOW
   /// HELPER FUNCTIONS ARE THE PRIVATE FUNCTION AND IT WILL DO THE INDIVIDUAL OPERATION

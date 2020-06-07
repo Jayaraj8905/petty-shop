@@ -24,9 +24,7 @@ class ProductOverviewScreen extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add), 
-            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: {
-              'shop': shop
-            })
+            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: shop.id)
           )
         ],
       ),

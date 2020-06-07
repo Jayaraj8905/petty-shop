@@ -50,8 +50,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context).settings.arguments;
-    final Shop shop = arguments['shop'];
+    final String shopId = ModalRoute.of(context).settings.arguments as String;
+    final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
+    
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

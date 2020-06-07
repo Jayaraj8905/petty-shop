@@ -59,9 +59,7 @@ class ShopListScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(Icons.input), 
                       onPressed: () => {
-                        Navigator.of(context).pushNamed(ShopScreen.routeName, arguments: {
-                          'shop': shops.list[i]
-                        })
+                        Navigator.of(context).pushNamed(ShopScreen.routeName, arguments: shops.list[i].id)
                       }
                     ),
                   )
