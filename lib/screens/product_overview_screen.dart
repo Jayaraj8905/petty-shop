@@ -13,25 +13,16 @@ class ProductOverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context).settings.arguments;
-    final Shop shop = arguments['shop'];
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          shop.name
+          'Products'
         ),
-        // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add), 
-            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: shop.id)
-          )
-        ],
       ),
       body: RefreshIndicator(
-          onRefresh: () => Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
+          onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
           child: FutureBuilder(
-          future: Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
+          future: Provider.of<Products>(context, listen: false).fetchProducts(),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(
