@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:petty_shop/screens/product_overview_screen.dart';
 import 'package:petty_shop/screens/shop_add_screen.dart';
+import 'package:petty_shop/screens/shop_screen.dart';
 import 'package:petty_shop/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:petty_shop/providers/shops.dart';
@@ -59,7 +59,7 @@ class ShopListScreen extends StatelessWidget {
                     trailing: IconButton(
                       icon: Icon(Icons.input), 
                       onPressed: () => {
-                        Navigator.of(context).pushNamed(ProductOverviewScreen.routeName)
+                        Navigator.of(context).pushNamed(ShopScreen.routeName, arguments: shops.list[i].id)
                       }
                     ),
                   )

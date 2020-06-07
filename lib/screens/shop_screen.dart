@@ -7,22 +7,33 @@ import './../providers/products.dart';
 import './../widgets/products_grid.dart';
 import './../widgets/app_drawer.dart';
 
-class ProductOverviewScreen extends StatelessWidget {
-  
-  static const routeName = '/products';
+class ShopScreen extends StatelessWidget {
+  static const routeName = '/shop';
+
+  const ShopScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String shopId = ModalRoute.of(context).settings.arguments as String;
+    final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Products'
+          shop.name
         ),
+        // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add), 
+            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: shop.id)
+          )
+        ],
       ),
       body: RefreshIndicator(
-          onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
+          onRefresh: () => Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
           child: FutureBuilder(
-          future: Provider.of<Products>(context, listen: false).fetchProducts(),
+          future: Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(

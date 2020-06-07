@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:petty_shop/helpers/custom_route.dart';
 import 'package:petty_shop/providers/shops.dart';
+import 'package:petty_shop/screens/product_add_screen.dart';
 import 'package:petty_shop/screens/shop_add_screen.dart';
 import 'package:petty_shop/screens/shop_list_screen.dart';
+import 'package:petty_shop/screens/shop_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
 import './screens/product_overview_screen.dart';
@@ -29,6 +31,7 @@ class PettyShopApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Auth, Products>(
           update: (ctx, auth, previousProducts) => Products(
             auth.token,
+            auth.userId,
             previousProducts == null ? [] : previousProducts.items
           ), create: (BuildContext context) {},
         ),
@@ -78,10 +81,12 @@ class PettyShopApp extends StatelessWidget {
           routes: {
             ProductOverviewScreen.routeName: (ctx) => ProductOverviewScreen(),
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
+            ProductAddScreen.routeName: (ctx) => ProductAddScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
             ShopAddScreen.routeName: (ctx) => ShopAddScreen(),
-            ShopListScreen.routeName: (ctx) => ShopListScreen()
+            ShopListScreen.routeName: (ctx) => ShopListScreen(),
+            ShopScreen.routeName: (ctx) => ShopScreen()
           },
         ),
       )
