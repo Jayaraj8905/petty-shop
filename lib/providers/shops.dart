@@ -19,7 +19,6 @@ class Shops with ChangeNotifier {
   }
 
   Future<void> addShop(String name, File image, LocationDetails locationDetails) async {
-    final timestamp = DateTime.now();
     final GeoFirePoint geoFirePoint = geoFire.point(latitude: locationDetails.latitude, longitude: locationDetails.longitude);
     try {
       // Add the shop using helper
@@ -105,6 +104,7 @@ class Shops with ChangeNotifier {
     final response = await collectionReference.getDocuments();
     return response.documents;
   }
+
   /// TODO: APPLY THE LIMIT  
   /// Helper to get the products
   Future<List<DocumentSnapshot>> _getShops({String id, String name, double radius, LocationDetails locationDetails, String userId}) async {
