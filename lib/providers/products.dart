@@ -64,7 +64,7 @@ class Products with ChangeNotifier {
         productDocRef = await _createProduct(name: name, description: description, price: price, image: image, userId: this.userId);
       }
       
-      // Check the product is not already there is the shop products
+      // Check the product is not already there in the shop products
 
       // after the product is added, add the product in the shop_products
       // TODO: INDEX SHOULD BE ADDED FOR (NAME)
