@@ -67,8 +67,8 @@ class Products with ChangeNotifier {
       // Check the product is not already there is the shop products
 
       // after the product is added, add the product in the shop_products
-      // TODO: INDEX SHOULD BE ADDED FOR (NAME, SHOP)
-      final shopProductDocRef = await _createShopProduct(shopId: shopId, name: name, description: description, 
+      // TODO: INDEX SHOULD BE ADDED FOR (NAME)
+      final shopProductDocRef = await _createShopProduct(shopId, name: name, description: description, 
                                                           price: price, product: productDocRef, image: image, userId: this.userId);
       
       // fetch the added product
@@ -163,13 +163,13 @@ class Products with ChangeNotifier {
   }
 
   /// Helper to create the shop product
-  Future<DocumentReference> _createShopProduct({@required String shopId, @required String name, @required String description, 
+  Future<DocumentReference> _createShopProduct(shopId, {@required String name, @required String description, 
                                                 @required double price, @required File image, @required DocumentReference product,
                                                 @required userId}) async {
     final timestamp = DateTime.now();
     final extension = path.extension(image.path);
-    final shopProductDocRef = await Firestore.instance.collection('shop_products').add({
-      "shopId": shopId,
+    // NOTE: Added the sub collection name as shop_products instead of products as querying using collectionGroup will search all the documents with the same. So better follow the unique name
+    final shopProductDocRef = await Firestore.instance.collection('shops').document(shopId).collection('shop_products').add({
       "name": name,
       "description": description,
       "price": price,
@@ -178,9 +178,9 @@ class Products with ChangeNotifier {
     });
 
     // Upload the product image
-    // create the folder products->{productId}->image_{timestamp in milliseconds}
+    // create the folder shops->{shopId}->shop_products->{shopProductId}->image_{timestamp in milliseconds}
     final fileuploadRef = FirebaseStorage.instance
-                          .ref().child('shops').child(shopId).child('products').child(product.documentID)
+                          .ref().child('shops').child(shopId).child('shop_products').child(shopProductDocRef.documentID)
                           .child('image_' + timestamp.millisecondsSinceEpoch.toString() + extension);
     await fileuploadRef.putFile(image).onComplete;
     final url = await fileuploadRef.getDownloadURL();
@@ -194,10 +194,7 @@ class Products with ChangeNotifier {
 
   /// Helper to get the products
   Future<List<DocumentSnapshot>> _getShopProduct(String shopId, {String name}) async {
-    Query collectionReference = Firestore.instance.collection('shop_products').reference();
-    if (shopId != null) {
-      collectionReference = collectionReference.where('shopId', isEqualTo: shopId);
-    }
+    Query collectionReference = Firestore.instance.collection('shops').document(shopId).collection('shop_products').reference();
     if (name != null) {
       collectionReference = collectionReference.where('name', isEqualTo: name);
     }
