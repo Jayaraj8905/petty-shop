@@ -18,9 +18,9 @@ class Products with ChangeNotifier {
 
   Future<void> fetchProducts() async {
     try {
-      final response = await Firestore.instance.collection('products').getDocuments();
+      final documents = await _getProducts();
       List<Product> loadedProducts = [];
-      response.documents.forEach((product) {
+      documents.forEach((product) {
         loadedProducts.add(
           Product(
             id: product.documentID,
@@ -56,7 +56,7 @@ class Products with ChangeNotifier {
 
       // check any product already exists with this name 
       // TODO: ADD INDEX FOR THE NAME, USERID IN THE PRODUCT
-      final documents = await _getProduct(name: name);
+      final documents = await _getProducts(name: name);
       DocumentReference productDocRef;
       if (documents != null && documents.length > 0) {
         productDocRef = Firestore.instance.collection('products').document(documents[0].documentID);
@@ -153,7 +153,7 @@ class Products with ChangeNotifier {
   }
 
   /// Helper to get the products
-  Future<List<DocumentSnapshot>> _getProduct({String id, String name}) async {
+  Future<List<DocumentSnapshot>> _getProducts({String id, String name}) async {
     Query collectionReference = Firestore.instance.collection('products').reference();
     if (name != null) {
       collectionReference = collectionReference.where('name', isEqualTo: name);
