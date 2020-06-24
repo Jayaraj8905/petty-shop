@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petty_shop/providers/shops.dart';
-import 'package:petty_shop/screens/product_add_screen.dart';
+import 'package:petty_shop/screens/shop_manage.dart';
 import 'package:petty_shop/widgets/cart_action.dart';
 import 'package:provider/provider.dart';
 import './../providers/products.dart';
@@ -25,8 +25,8 @@ class ShopScreen extends StatelessWidget {
         // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add), 
-            onPressed: () => Navigator.of(context).pushNamed(ProductAddScreen.routeName, arguments: shop.id)
+            icon: Icon(Icons.settings), 
+            onPressed: () => Navigator.of(context).pushNamed(ShopManage.routeName, arguments: shop.id)
           )
         ],
       ),

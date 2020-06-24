@@ -4,6 +4,7 @@ import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/screens/product_add_screen.dart';
 import 'package:petty_shop/screens/shop_add_screen.dart';
 import 'package:petty_shop/screens/shop_list_screen.dart';
+import 'package:petty_shop/screens/shop_manage.dart';
 import 'package:petty_shop/screens/shop_screen.dart';
 import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
@@ -86,7 +87,8 @@ class PettyShopApp extends StatelessWidget {
             OrdersScreen.routeName: (ctx) => OrdersScreen(),
             ShopAddScreen.routeName: (ctx) => ShopAddScreen(),
             ShopListScreen.routeName: (ctx) => ShopListScreen(),
-            ShopScreen.routeName: (ctx) => ShopScreen()
+            ShopScreen.routeName: (ctx) => ShopScreen(),
+            ShopManage.routeName: (ctx) => ShopManage()
           },
         ),
       )
