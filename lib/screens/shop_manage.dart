@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:petty_shop/providers/shops.dart';
 import 'package:provider/provider.dart';
 
-class ShopManage extends StatelessWidget {
+class ShopManage extends StatefulWidget {
   static const routeName = '/shop-manage';
   const ShopManage({Key key}) : super(key: key);
 
+  @override
+  _ShopManageState createState() => _ShopManageState();
+}
+
+class _ShopManageState extends State<ShopManage> {
   @override
   Widget build(BuildContext context) {
     final String shopId = ModalRoute.of(context).settings.arguments as String;
