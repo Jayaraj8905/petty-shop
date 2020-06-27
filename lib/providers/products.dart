@@ -38,6 +38,35 @@ class Products with ChangeNotifier {
     }
   }
 
+  /// Just query without notifier
+  Future<List<Product>> queryProducts({String nameStr}) async {
+    try {
+      final documents = await _getProducts();
+      List<Product> loadedProducts = [];
+      documents.forEach((product) {
+        if (nameStr != null) {
+          // if name str there, filter it based on the contains search
+          // TOOD: NEEDS TO MOVE TO DB LAYER. FIREBASE DIDNT HAVE THE FEASIBILITY
+          if (!product["name"].toString().toLowerCase().contains(nameStr.toLowerCase())) {
+            return;
+          }
+        }
+        loadedProducts.add(
+          Product(
+            id: product.documentID,
+            name: product["name"],
+            price: product["price"].toDouble(),
+            description: product["description"],
+            image: product["image"]
+          )
+        );
+      });
+      return loadedProducts;
+    } catch(e) {
+      throw(e);
+    }
+  }
+
 
   List<Product> get items {
     return [..._items];

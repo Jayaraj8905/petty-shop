@@ -1,10 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:petty_shop/providers/product.dart';
 import 'package:petty_shop/providers/products.dart';
 import 'package:petty_shop/providers/shops.dart';
 import 'package:petty_shop/widgets/image_input_field.dart';
 import 'package:provider/provider.dart';
+
+class ProductAddScreenArguments {
+  final String shopId;
+  final Product product;
+
+  ProductAddScreenArguments({
+    @required this.shopId, 
+    this.product
+  });
+}
 
 class ProductAddScreen extends StatefulWidget {
   static const routeName ='/product-add';
@@ -50,7 +61,9 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String shopId = ModalRoute.of(context).settings.arguments as String;
+    final ProductAddScreenArguments arguments = ModalRoute.of(context).settings.arguments;
+    final String shopId = arguments.shopId;
+    final Product product = arguments.product;
     final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
     
     return Scaffold(
@@ -79,6 +92,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        initialValue: product != null ? product.name : '',
                         decoration: InputDecoration(
                           labelText: 'Name'
                         ),
@@ -94,6 +108,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         },
                       ),
                       TextFormField(
+                        initialValue: product != null ? product.description : '',
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                         decoration: InputDecoration(
@@ -110,6 +125,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         }
                       ),
                       TextFormField(
+                        initialValue: product != null ? product.price.toString() : '',
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Price'
