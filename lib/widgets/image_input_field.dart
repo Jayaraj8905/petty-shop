@@ -17,6 +17,7 @@ class ImageInputField extends FormField<File> {
     FormFieldSetter<File> onSaved,
     FormFieldValidator<File> validator,
     File initialValue,
+    String url,
     bool autovalidate = false
   }): super(
     onSaved: onSaved,
@@ -24,6 +25,18 @@ class ImageInputField extends FormField<File> {
     initialValue: initialValue,
     autovalidate: autovalidate,
     builder: (FormFieldState<File> state) {
+
+      Future<File> _urlToImage(String url) async {
+        final response = await http.get(url);
+        Directory tempDir = await getTemporaryDirectory();
+        String tempPath = tempDir.path;
+        final ext = path.extension(url);
+        final filename = DateTime.now().millisecondsSinceEpoch.toString();
+        File image;
+        image = File('$tempPath/$filename$ext');
+        image.writeAsBytes(response.bodyBytes);
+        return image;
+      }
 
       Future<ImageInputFieldSource> _selectSource() async {
         return await showDialog(
@@ -75,13 +88,7 @@ class ImageInputField extends FormField<File> {
             // show the dialog once again for the url input
             if (url != null) {
               try {
-                final response = await http.get(url);
-                Directory tempDir = await getTemporaryDirectory();
-                String tempPath = tempDir.path;
-                final ext = path.extension(url);
-                final filename = DateTime.now().millisecondsSinceEpoch.toString();
-                image = File('$tempPath/$filename$ext');
-                image.writeAsBytes(response.bodyBytes);  
+                image = await _urlToImage(url);
               } catch (e) {
                 throw(e);
               }
@@ -99,6 +106,19 @@ class ImageInputField extends FormField<File> {
           throw(e);
         }
         
+      }
+      
+      print("Url analysed");
+      // TODO: Need to implement based on the controller concept like below
+      // https://github.com/tshedor/flutter_image_form_field
+      // This is temporary
+      // TODO: Implement the loader for safe
+      if (url != null && state.value == null) {
+        print("Url is there ${url}");
+        _urlToImage(url).then((File value) {
+          print(value);
+          state.didChange(value);
+        });
       }
       return Column(
         children: <Widget>[

@@ -148,6 +148,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                       ),
                       // TODO: ENHANCE TO PARSE THE URL FROM HTTP
                       ImageInputField(
+                        url: product != null ? product.image : '',
                         validator: (File file) {
                           if (file == null) {
                             return 'Capture the image';
