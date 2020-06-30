@@ -32,8 +32,7 @@ class _ShopManageState extends State<ShopManage> {
             child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                   controller: this._typeAheadController,
-                  autofocus: true,
-                  decoration: InputDecoration(border: OutlineInputBorder())),
+                  decoration: InputDecoration(labelText: 'Add Product')),
               suggestionsCallback: (pattern) async {
                 final products =
                     await Provider.of<Products>(context, listen: false)
