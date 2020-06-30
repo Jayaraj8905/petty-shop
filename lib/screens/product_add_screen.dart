@@ -89,6 +89,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                   child: Column(
                     children: <Widget>[
                       TextFormField(
+                        enabled: product == null,
                         initialValue: product != null ? product.name : '',
                         decoration: InputDecoration(labelText: 'Name'),
                         validator: (value) {
