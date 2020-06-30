@@ -15,25 +15,26 @@ class ShopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String shopId = ModalRoute.of(context).settings.arguments as String;
-    final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
-    
+    final Shop shop =
+        Provider.of<Shops>(context, listen: false).findById(shopId);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          shop.name
-        ),
+        title: Text(shop.name),
         // TODO: SHOW THIS ONLY FOR THE ADMIN, OWNER OR SELLER OF THE SHOP
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.settings), 
-            onPressed: () => Navigator.of(context).pushNamed(ShopManage.routeName, arguments: shop.id)
-          )
+              icon: Icon(Icons.settings),
+              onPressed: () => Navigator.of(context)
+                  .pushNamed(ShopManage.routeName, arguments: shop.id))
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: () => Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
-          child: FutureBuilder(
-          future: Provider.of<Products>(context, listen: false).fetchByShopProducts(shop.id),
+        onRefresh: () => Provider.of<Products>(context, listen: false)
+            .fetchByShopProducts(shop.id),
+        child: FutureBuilder(
+          future: Provider.of<Products>(context, listen: false)
+              .fetchByShopProducts(shop.id),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -51,7 +52,9 @@ class ShopScreen extends StatelessWidget {
         ),
       ),
       drawer: AppDrawer(),
-      floatingActionButton: CartAction(),
+      floatingActionButton: CartAction(
+        shopId: shopId,
+      ),
     );
   }
 }

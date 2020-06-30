@@ -8,20 +8,20 @@ import './../widgets/products_grid.dart';
 import './../widgets/app_drawer.dart';
 
 class ProductOverviewScreen extends StatelessWidget {
-  
   static const routeName = '/products';
+
+  // TODO: CLEAR THE PRODUCTS OF THE OTHER SHOPS IF ANY
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Products'
-        ),
+        title: Text('Products'),
       ),
       body: RefreshIndicator(
-          onRefresh: () => Provider.of<Products>(context, listen: false).fetchProducts(),
-          child: FutureBuilder(
+        onRefresh: () =>
+            Provider.of<Products>(context, listen: false).fetchProducts(),
+        child: FutureBuilder(
           future: Provider.of<Products>(context, listen: false).fetchProducts(),
           builder: (context, dataSnapshot) {
             if (dataSnapshot.connectionState == ConnectionState.waiting) {

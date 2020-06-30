@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:petty_shop/providers/cart.dart';
 import 'package:petty_shop/providers/orders.dart';
 import 'package:petty_shop/widgets/order_item_widget.dart';
+import 'package:provider/provider.dart';
 
 class ShopOrders extends StatelessWidget {
   static const routeName = '/shop-orders';
@@ -28,24 +29,12 @@ class ShopOrders extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
-              final orders = snapshot.data.documents;
+              final orders = Provider.of<Orders>(context, listen: false)
+                  .convertDocSnapShotToOrderItemList(snapshot.data.documents);
               return ListView.builder(
                 itemCount: orders.length,
                 itemBuilder: (ctx, index) {
-                  final order = OrderItem(
-                      id: orders[index].documentID,
-                      price: orders[index]["price"].toDouble(),
-                      createDate: DateTime.parse(orders[index]["createDate"]),
-                      products: (json.decode(orders[index]["products"])
-                              as List<dynamic>)
-                          .map((item) {
-                        return CartItem(
-                            id: item["id"],
-                            name: item["name"],
-                            price: item["price"].toDouble(),
-                            unit_value: item["unit_value"]);
-                      }).toList());
-                  return OrderItemWidget(order);
+                  return OrderItemWidget(orders[index]);
                 },
               );
             }));
