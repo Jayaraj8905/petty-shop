@@ -10,8 +10,10 @@ import 'package:provider/provider.dart';
 class ProductAddScreenArguments {
   final String shopId;
   final Product product;
+  final String productName;
 
-  ProductAddScreenArguments({@required this.shopId, this.product});
+  ProductAddScreenArguments(
+      {@required this.shopId, this.product, this.productName});
 }
 
 class ProductAddScreen extends StatefulWidget {
@@ -60,6 +62,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
         ModalRoute.of(context).settings.arguments;
     final String shopId = arguments.shopId;
     final Product product = arguments.product;
+    final String productName = arguments.productName;
     final Shop shop =
         Provider.of<Shops>(context, listen: false).findById(shopId);
 
@@ -90,7 +93,8 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     children: <Widget>[
                       TextFormField(
                         enabled: product == null,
-                        initialValue: product != null ? product.name : '',
+                        initialValue:
+                            product != null ? product.name : productName,
                         decoration: InputDecoration(labelText: 'Name'),
                         validator: (value) {
                           if (value.isEmpty) {
