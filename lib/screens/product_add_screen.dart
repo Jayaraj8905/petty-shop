@@ -11,14 +11,11 @@ class ProductAddScreenArguments {
   final String shopId;
   final Product product;
 
-  ProductAddScreenArguments({
-    @required this.shopId, 
-    this.product
-  });
+  ProductAddScreenArguments({@required this.shopId, this.product});
 }
 
 class ProductAddScreen extends StatefulWidget {
-  static const routeName ='/product-add';
+  static const routeName = '/product-add';
   ProductAddScreen({Key key}) : super(key: key);
 
   @override
@@ -47,25 +44,25 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
       // await Provider.of<Products>(context, listen: false).addProduct();
 
       await Provider.of<Products>(context, listen: false).addShopProduct(
-        _formData['shopId'],
-        name: _formData['name'],
-        description: _formData['description'],
-        price: _formData['price'],
-        image: _formData['image']
-      );
+          _formData['shopId'],
+          productId: _formData['productId'],
+          name: _formData['name'],
+          description: _formData['description'],
+          price: _formData['price'],
+          image: _formData['image']);
       Navigator.of(context).pop();
-    } else {
-      
-    }
+    } else {}
   }
 
   @override
   Widget build(BuildContext context) {
-    final ProductAddScreenArguments arguments = ModalRoute.of(context).settings.arguments;
+    final ProductAddScreenArguments arguments =
+        ModalRoute.of(context).settings.arguments;
     final String shopId = arguments.shopId;
     final Product product = arguments.product;
-    final Shop shop = Provider.of<Shops>(context, listen: false).findById(shopId);
-    
+    final Shop shop =
+        Provider.of<Shops>(context, listen: false).findById(shopId);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -93,9 +90,7 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                     children: <Widget>[
                       TextFormField(
                         initialValue: product != null ? product.name : '',
-                        decoration: InputDecoration(
-                          labelText: 'Name'
-                        ),
+                        decoration: InputDecoration(labelText: 'Name'),
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Invalid Product name';
@@ -105,60 +100,58 @@ class _ProductAddScreenState extends State<ProductAddScreen> {
                         onSaved: (value) {
                           _formData['name'] = value;
                           _formData['shopId'] = shop.id;
+                          _formData['productId'] =
+                              product != null ? product.id : null;
                         },
                       ),
                       TextFormField(
-                        initialValue: product != null ? product.description : '',
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                          labelText: 'Description'
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Invalid Product description';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _formData['description'] = value;
-                        }
-                      ),
+                          initialValue:
+                              product != null ? product.description : '',
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 3,
+                          decoration: InputDecoration(labelText: 'Description'),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Invalid Product description';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _formData['description'] = value;
+                          }),
                       TextFormField(
-                        initialValue: product != null ? product.price.toString() : '',
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Price'
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty || double.tryParse(value) == null) {
-                            return 'Invalid Price';
-                          }
-                          if (double.parse(value) <= 0) {
-                            return 'Enter price greater than 0';
-                          }  
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _formData['price'] = double.tryParse(value);
-                        }
-                      ),
+                          initialValue:
+                              product != null ? product.price.toString() : '',
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(labelText: 'Price'),
+                          validator: (value) {
+                            if (value.isEmpty ||
+                                double.tryParse(value) == null) {
+                              return 'Invalid Price';
+                            }
+                            if (double.parse(value) <= 0) {
+                              return 'Enter price greater than 0';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _formData['price'] = double.tryParse(value);
+                          }),
                       SizedBox(
                         height: 20,
                       ),
                       // TODO: ENHANCE TO PARSE THE URL FROM HTTP
                       ImageInputField(
-                        url: product != null ? product.image : '',
-                        validator: (File file) {
-                          if (file == null) {
-                            return 'Capture the image';
-                          }
-                          return null;
-                        },
-                        onSaved: (File file) {
-                          _formData['image'] = file;
-                        }
-                      )
+                          url: product != null ? product.image : '',
+                          validator: (File file) {
+                            if (file == null) {
+                              return 'Capture the image';
+                            }
+                            return null;
+                          },
+                          onSaved: (File file) {
+                            _formData['image'] = file;
+                          })
                     ],
                   ),
                 ),
