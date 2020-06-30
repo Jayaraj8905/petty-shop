@@ -16,14 +16,12 @@ class ProductsGrid extends StatelessWidget {
           child: ProductItem(),
         );
       },
-      itemCount: products.length, 
+      itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3/2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10
-      ),
+          crossAxisCount: 2,
+          childAspectRatio: 3 / 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10),
     );
   }
-
 }
